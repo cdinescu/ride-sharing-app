@@ -24,6 +24,7 @@
     <modules>
         <module>gateway-service</module>
         <module>eureka-service</module>
+        <module>config-service</module>
         <module>ride-planner-service</module>
     </modules>
 
