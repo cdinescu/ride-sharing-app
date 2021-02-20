@@ -50,19 +50,19 @@ public class RideDAOImpl implements RideDAO {
     }
 
     private Ride updateRide(RideRequest rideRequest, Ride rideAboutToUpdate) {
-        Ride updatedRide;// = modelMapper.map(rideRequest, Ride.class);
+        Ride updatedRide;
         log.info("RideRequest: {}, update ride {}}", rideRequest, rideAboutToUpdate);
 
         try {
             updatedRide = (Ride) rideAboutToUpdate.clone();
             updatedRide.setPickupLocation(rideRequest.getPickupLocation());
             updatedRide.setDestination(rideRequest.getDestination());
+
             changeRideStatusIfNeeded(rideRequest, rideAboutToUpdate);
         } catch (CloneNotSupportedException cloneException) {
             updatedRide = rideAboutToUpdate;
             log.error("Failed to clone {}: ", cloneException);
         }
-        changeRideStatusIfNeeded(rideRequest, rideAboutToUpdate);
 
         return updatedRide;
     }

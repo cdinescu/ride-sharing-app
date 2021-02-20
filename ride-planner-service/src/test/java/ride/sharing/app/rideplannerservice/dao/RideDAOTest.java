@@ -1,11 +1,11 @@
 package ride.sharing.app.rideplannerservice.dao;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.test.annotation.Rollback;
@@ -17,13 +17,21 @@ import ride.sharing.app.rideplannerservice.domain.RideRequest;
 import ride.sharing.app.rideplannerservice.domain.enums.RideStatus;
 import ride.sharing.app.rideplannerservice.repository.RideRepository;
 
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
+import static ride.sharing.app.rideplannerservice.domain.enums.RideStatus.CANCELLED_BY_CLIENT;
+import static ride.sharing.app.rideplannerservice.domain.enums.RideStatus.NEW;
+import static ride.sharing.app.rideplannerservice.domain.enums.RideUpdateType.DRIVER_CANCELLATION;
 
 @ExtendWith(MockitoExtension.class)
 class RideDAOTest {
 
     public static final String PICKUP_LOCATION = "source";
     public static final String DESTINATION = "destination";
+
+    public static final String UPDATED_PICKUP_LOCATION = "new source";
+    public static final String UPDATED_DESTINATION = "new destination";
+    public static final Long ID = 1L;
 
     @Mock
     private RideRepository repository;
@@ -36,21 +44,17 @@ class RideDAOTest {
         this.rideDAO = new RideDAOImpl(new ModelMapper(), repository);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     @Rollback
     void createRide() {
         // Arrange
         var rideRequest = createRideRequest(PICKUP_LOCATION, DESTINATION);
-        var expectedRide = createRideEntity(PICKUP_LOCATION, DESTINATION, RideStatus.NEW);
+        var expectedRide = createRideEntity(PICKUP_LOCATION, DESTINATION, NEW);
 
         when(repository.save(expectedRide)).thenReturn(Mono.just(expectedRide));
 
         // Act
-        Mono<Ride> result = rideDAO.createRide(rideRequest);
+        var result = rideDAO.createRide(rideRequest);
 
         // Assert
         StepVerifier.create(result).expectNext(expectedRide).verifyComplete();
@@ -60,21 +64,36 @@ class RideDAOTest {
     @Rollback
     void findAllRides() {
         // Arrange
-        var expectedRide1 = createRideEntity(PICKUP_LOCATION, DESTINATION, RideStatus.NEW);
-        var expectedRide2 = createRideEntity(PICKUP_LOCATION, DESTINATION, RideStatus.CANCELLED_BY_CLIENT);
+        var expectedRide1 = createRideEntity(PICKUP_LOCATION, DESTINATION, NEW);
+        var expectedRide2 = createRideEntity(PICKUP_LOCATION, DESTINATION, CANCELLED_BY_CLIENT);
 
         when(repository.findAll()).thenReturn(Flux.just(expectedRide1, expectedRide2));
 
         // Act
-        Flux<Ride> allRides = rideDAO.findAllRides();
+        var allRides = rideDAO.findAllRides();
 
         // Assert
-        StepVerifier.create(allRides).expectNext(expectedRide1).expectNext(expectedRide2).expectComplete();
+        StepVerifier.create(allRides).expectNext(expectedRide1).expectNext(expectedRide2).verifyComplete();
     }
 
     @Test
     @Rollback
     void updateRide() {
+        // Arrange
+        var rideRequest = createRideRequest(UPDATED_PICKUP_LOCATION, UPDATED_DESTINATION);
+        rideRequest.setUpdateType(DRIVER_CANCELLATION);
+
+        var initialRideEntity = createRideEntity(PICKUP_LOCATION, DESTINATION, NEW);
+        var updatedRide = createRideEntity(UPDATED_PICKUP_LOCATION, UPDATED_DESTINATION, CANCELLED_BY_CLIENT);
+
+        when(repository.findById(ID)).thenReturn(Mono.just(initialRideEntity));
+        lenient().when(repository.save(Mockito.any(Ride.class))).thenReturn(Mono.just(updatedRide));
+
+        // Act
+        var rideMono = rideDAO.updateRide(ID, rideRequest);
+
+        // Assert
+        StepVerifier.create(rideMono).expectNextMatches(updatedRide::equals).verifyComplete();
     }
 
     private RideRequest createRideRequest(String pickupLocation, String destination) {
