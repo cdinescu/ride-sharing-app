@@ -8,7 +8,7 @@ import ride.sharing.app.rideplannerservice.domain.Ride;
 import ride.sharing.app.rideplannerservice.domain.RideRequest;
 
 @Service
-public class RidePlanningServiceImpl implements  RidePlanningService {
+public class RidePlanningServiceImpl implements RidePlanningService {
     private final RideDAO rideDAO;
 
     public RidePlanningServiceImpl(RideDAO rideDAO) {

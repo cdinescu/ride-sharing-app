@@ -41,18 +41,19 @@ public class RideDAOImpl implements RideDAO {
     @Transactional
     @Override
     public Mono<Ride> updateRide(Long rideId, RideRequest updateRideRequest) {
-        return rideRepository.findById (rideId)
+        return rideRepository.findById(rideId)
                 .map(ride -> updateRide(updateRideRequest, ride))
                 .flatMap(updatedRide -> {
                     log.info("SAVE {}", updatedRide);
-                    return rideRepository.save(updatedRide);});
+                    return rideRepository.save(updatedRide);
+                });
     }
 
     private Ride updateRide(RideRequest rideRequest, Ride rideAboutToUpdate) {
         Ride updatedRide;// = modelMapper.map(rideRequest, Ride.class);
         log.info("RideRequest: {}, update ride {}}", rideRequest, rideAboutToUpdate);
 
-       try {
+        try {
             updatedRide = (Ride) rideAboutToUpdate.clone();
             updatedRide.setPickupLocation(rideRequest.getPickupLocation());
             updatedRide.setDestination(rideRequest.getDestination());
