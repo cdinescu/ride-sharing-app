@@ -45,7 +45,6 @@ class RideDAOTest {
     }
 
     @Test
-    @Rollback
     void createRide() {
         // Arrange
         var rideRequest = createRideRequest(PICKUP_LOCATION, DESTINATION);
@@ -61,7 +60,6 @@ class RideDAOTest {
     }
 
     @Test
-    @Rollback
     void findAllRides() {
         // Arrange
         var expectedRide1 = createRideEntity(PICKUP_LOCATION, DESTINATION, NEW);
@@ -77,7 +75,6 @@ class RideDAOTest {
     }
 
     @Test
-    @Rollback
     void updateRide() {
         // Arrange
         var rideRequest = createRideRequest(UPDATED_PICKUP_LOCATION, UPDATED_DESTINATION);
