@@ -42,7 +42,11 @@ public class RideDAOImpl implements RideDAO {
     @Override
     public Mono<Ride> updateRide(Long rideId, RideRequest updateRideRequest) {
         return rideRepository.findById(rideId)
-                .map(ride -> updateRide(updateRideRequest, ride))
+                .map(ride -> {
+                    log.info("Before: {}", ride);
+                    Ride ride1 = updateRide(updateRideRequest, ride);
+                    log.info("After: {}", ride1);
+                    return ride1;})
                 .flatMap(updatedRide -> {
                     log.info("SAVE {}", updatedRide);
                     return rideRepository.save(updatedRide);
@@ -50,21 +54,24 @@ public class RideDAOImpl implements RideDAO {
     }
 
     private Ride updateRide(RideRequest rideRequest, Ride rideAboutToUpdate) {
-        Ride updatedRide;
-        log.info("RideRequest: {}, update ride {}}", rideRequest, rideAboutToUpdate);
+        Ride result;
+        log.info("Update of {} triggered by {}", rideAboutToUpdate, rideRequest);
 
         try {
-            updatedRide = (Ride) rideAboutToUpdate.clone();
-            updatedRide.setPickupLocation(rideRequest.getPickupLocation());
-            updatedRide.setDestination(rideRequest.getDestination());
+            result = (Ride) rideAboutToUpdate.clone();
+            result.setPickupLocation(rideRequest.getPickupLocation());
+            result.setDestination(rideRequest.getDestination());
 
             changeRideStatusIfNeeded(rideRequest, rideAboutToUpdate);
+            result = rideAboutToUpdate;
+
+            log.info("Dar aici? {}", result.getRideStatus());
         } catch (CloneNotSupportedException cloneException) {
-            updatedRide = rideAboutToUpdate;
+            result = rideAboutToUpdate;
             log.error("Failed to clone {}: ", cloneException);
         }
 
-        return updatedRide;
+        return result;
     }
 
     private void changeRideStatusIfNeeded(RideRequest rideRequest, Ride updatableRide) {
@@ -88,5 +95,7 @@ public class RideDAOImpl implements RideDAO {
                 updatableRide.setRideStatus(RideStatus.CANCELLED_BY_DRIVER);
                 break;
         }
+
+        log.info("UUUUU: {}", updatableRide.getRideStatus());
     }
 }
