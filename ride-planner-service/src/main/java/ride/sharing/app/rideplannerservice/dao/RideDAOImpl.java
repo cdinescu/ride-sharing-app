@@ -63,9 +63,9 @@ public class RideDAOImpl implements RideDAO {
             result.setDestination(rideRequest.getDestination());
 
             changeRideStatusIfNeeded(rideRequest, rideAboutToUpdate);
-            result = rideAboutToUpdate;
+            result.setRideStatus(rideAboutToUpdate.getRideStatus());
 
-            log.info("Dar aici? {}", result.getRideStatus());
+            log.info("Dar aici? {}", result);
         } catch (CloneNotSupportedException cloneException) {
             result = rideAboutToUpdate;
             log.error("Failed to clone {}: ", cloneException);
@@ -96,6 +96,6 @@ public class RideDAOImpl implements RideDAO {
                 break;
         }
 
-        log.info("UUUUU: {}", updatableRide.getRideStatus());
+        log.info("UUUUU: {}", updatableRide);
     }
 }

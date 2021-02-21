@@ -1,7 +1,6 @@
 package ride.sharing.app.rideplannerservice.dao.service;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static ride.sharing.app.rideplannerservice.data.TestConstants.DESTINATION;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.PICKUP_LOCATION;
@@ -31,6 +29,7 @@ import static ride.sharing.app.rideplannerservice.domain.enums.RideUpdateType.CL
 class RidePlanningServiceTest {
 
     public static final long FIRST_ID = 1L;
+
     @Autowired
     RidePlanningService ridePlanningService;
 
@@ -108,7 +107,9 @@ class RidePlanningServiceTest {
         // Act
         var rideMono = ridePlanningService.updateRide(FIRST_ID, rideRequest);
 
-        StepVerifier.create(rideMono).assertNext(r -> Assertions.assertEquals(expectedRide, r))/*expectNextMatches(expectedRide::equals)*/.verifyComplete();
+        StepVerifier.create(rideMono)
+                .assertNext(r -> compareDatabaseEntryWithResult(expectedRide, r))
+                .verifyComplete();
     }
 
 }
