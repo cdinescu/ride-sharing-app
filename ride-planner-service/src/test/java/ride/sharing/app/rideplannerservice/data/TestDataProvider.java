@@ -43,12 +43,12 @@ public class TestDataProvider<T> {
         }
     }
 
-    public static Object insertIntoDatabase(DatabaseClient databaseClient, Ride ride ) {
+    public static Object insertIntoDatabase(DatabaseClient databaseClient, Ride ride) {
         return databaseClient
                 .sql("INSERT INTO RIDE (pickup_location, destination, ride_status) VALUES (:pickup, :destination, :ride_status)")
                 .bind("pickup", ride.getPickupLocation())
                 .bind("destination", ride.getDestination())
-                .bind("ride_status", ride.getRideStatus() == null? "NEW" : ride.getRideStatus().name())
+                .bind("ride_status", ride.getRideStatus() == null ? "NEW" : ride.getRideStatus().name())
                 .then().block();
     }
 }

@@ -46,7 +46,8 @@ public class RideDAOImpl implements RideDAO {
                     log.info("Before: {}", ride);
                     Ride ride1 = updateRide(updateRideRequest, ride);
                     log.info("After: {}", ride1);
-                    return ride1;})
+                    return ride1;
+                })
                 .flatMap(updatedRide -> {
                     log.info("SAVE {}", updatedRide);
                     return rideRepository.save(updatedRide);
