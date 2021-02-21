@@ -9,6 +9,9 @@ import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.annotation.Rollback;
 import reactor.core.publisher.Hooks;
 import reactor.test.StepVerifier;
+import ride.sharing.app.rideplannerservice.domain.Ride;
+import ride.sharing.app.rideplannerservice.domain.RideRequest;
+import ride.sharing.app.rideplannerservice.domain.enums.RideUpdateType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,8 +25,10 @@ import static ride.sharing.app.rideplannerservice.data.TestDataProvider.createRi
 import static ride.sharing.app.rideplannerservice.data.TestDataProvider.createRideRequest;
 import static ride.sharing.app.rideplannerservice.data.TestDataProvider.insertIntoDatabase;
 import static ride.sharing.app.rideplannerservice.domain.enums.RideStatus.CANCELLED_BY_CLIENT;
+import static ride.sharing.app.rideplannerservice.domain.enums.RideStatus.CANCELLED_BY_DRIVER;
 import static ride.sharing.app.rideplannerservice.domain.enums.RideStatus.NEW;
 import static ride.sharing.app.rideplannerservice.domain.enums.RideUpdateType.CLIENT_CANCELLATION;
+import static ride.sharing.app.rideplannerservice.domain.enums.RideUpdateType.DRIVER_CANCELLATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class RidePlanningServiceTest {
@@ -94,14 +99,55 @@ class RidePlanningServiceTest {
 
     @Test
     @Rollback
-    void updateRide() {
+    void updateRideWhenClientCancels() {
         // Arrange
         var rideRequest = createRideRequest(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name());
         rideRequest.setUpdateType(CLIENT_CANCELLATION);
 
-        var initialRideEntity = createRideEntity(PICKUP_LOCATION.name(), DESTINATION.name(), NEW);
         var expectedRide = createRideEntity(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name(), CANCELLED_BY_CLIENT);
 
+        // Act & Assert
+        updateAndCheck(rideRequest, expectedRide);
+    }
+
+    @Test
+    @Rollback
+    void updateRideWhenDriverCancels() {
+        // Arrange
+        var rideRequest = createRideRequest(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name());
+        rideRequest.setUpdateType(DRIVER_CANCELLATION);
+
+        var expectedRide = createRideEntity(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name(), CANCELLED_BY_DRIVER);
+
+        // Act & Assert
+        updateAndCheck(rideRequest, expectedRide);
+    }
+
+    @Test
+    @Rollback
+    void skipRideStatusUpdateNullUpdate() {
+        testNoRideStatusUpdate(null);
+    }
+
+    @Test
+    @Rollback
+    void skipRideStatusUpdateWhenRideStatusUnchanged() {
+        testNoRideStatusUpdate(RideUpdateType.NO_UPDATE);
+    }
+
+    private void testNoRideStatusUpdate(RideUpdateType updateType) {
+        // Arrange
+        var rideRequest = createRideRequest(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name());
+        rideRequest.setUpdateType(updateType); // null update means update skip
+
+        var expectedRide = createRideEntity(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name(), NEW);
+
+        // Act & Assert
+        updateAndCheck(rideRequest, expectedRide);
+    }
+
+    private void updateAndCheck(RideRequest rideRequest, Ride expectedRide) {
+        var initialRideEntity = createRideEntity(PICKUP_LOCATION.name(), DESTINATION.name(), NEW);
         insertIntoDatabase(databaseClient, initialRideEntity);
 
         // Act
