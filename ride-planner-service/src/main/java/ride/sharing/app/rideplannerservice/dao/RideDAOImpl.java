@@ -42,16 +42,8 @@ public class RideDAOImpl implements RideDAO {
     @Override
     public Mono<Ride> updateRide(Long rideId, RideRequest updateRideRequest) {
         return rideRepository.findById(rideId)
-                .map(ride -> {
-                    log.info("Before: {}", ride);
-                    Ride ride1 = updateRide(updateRideRequest, ride);
-                    log.info("After: {}", ride1);
-                    return ride1;
-                })
-                .flatMap(updatedRide -> {
-                    log.info("SAVE {}", updatedRide);
-                    return rideRepository.save(updatedRide);
-                });
+                .map(ride -> updateRide(updateRideRequest, ride))
+                .flatMap(rideRepository::save);
     }
 
     private Ride updateRide(RideRequest rideRequest, Ride rideAboutToUpdate) {
@@ -65,11 +57,9 @@ public class RideDAOImpl implements RideDAO {
 
             changeRideStatusIfNeeded(rideRequest, rideAboutToUpdate);
             result.setRideStatus(rideAboutToUpdate.getRideStatus());
-
-            log.info("Dar aici? {}", result);
         } catch (CloneNotSupportedException cloneException) {
             result = rideAboutToUpdate;
-            log.error("Failed to clone {}: ", cloneException);
+            log.error("Failed to clone {}: ", rideAboutToUpdate, cloneException);
         }
 
         return result;
@@ -96,7 +86,5 @@ public class RideDAOImpl implements RideDAO {
                 updatableRide.setRideStatus(RideStatus.CANCELLED_BY_DRIVER);
                 break;
         }
-
-        log.info("UUUUU: {}", updatableRide);
     }
 }
