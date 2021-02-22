@@ -1,6 +1,7 @@
 package ride.sharing.app.rideplannerservice.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +38,9 @@ public class RidePlanningController {
     }
 
     @PutMapping("/{id}")
-    public Mono<Ride> updateRide(@PathVariable("id") Long id, @RequestBody RideRequest rideRequest) {
-        return ridePlanningService.updateRide(id, rideRequest);
+    public Mono<Ride> updateRide(@PathVariable("id") Long id, @RequestBody RideRequest rideRequest, ServerHttpResponse response) {
+        Mono<Ride> rideMono = ridePlanningService.updateRide(id, rideRequest);
+
+        return rideMono;
     }
 }

@@ -2,8 +2,10 @@ package ride.sharing.app.rideplannerservice.dao;
 
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ride.sharing.app.rideplannerservice.domain.Ride;
@@ -41,29 +43,29 @@ public class RideDAOImpl implements RideDAO {
     @Transactional
     @Override
     public Mono<Ride> updateRide(Long rideId, RideRequest updateRideRequest) {
-        return rideRepository.findById (rideId)
+        return rideRepository.findById(rideId)
                 .map(ride -> updateRide(updateRideRequest, ride))
-                .flatMap(updatedRide -> {
-                    log.info("SAVE {}", updatedRide);
-                    return rideRepository.save(updatedRide);});
+                .flatMap(rideRepository::save)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
 
     private Ride updateRide(RideRequest rideRequest, Ride rideAboutToUpdate) {
-        Ride updatedRide;// = modelMapper.map(rideRequest, Ride.class);
-        log.info("RideRequest: {}, update ride {}}", rideRequest, rideAboutToUpdate);
+        Ride result;
+        log.info("Update of {} triggered by {}", rideAboutToUpdate, rideRequest);
 
-       try {
-            updatedRide = (Ride) rideAboutToUpdate.clone();
-            updatedRide.setPickupLocation(rideRequest.getPickupLocation());
-            updatedRide.setDestination(rideRequest.getDestination());
+        try {
+            result = (Ride) rideAboutToUpdate.clone();
+            result.setPickupLocation(rideRequest.getPickupLocation());
+            result.setDestination(rideRequest.getDestination());
+
             changeRideStatusIfNeeded(rideRequest, rideAboutToUpdate);
+            result.setRideStatus(rideAboutToUpdate.getRideStatus());
         } catch (CloneNotSupportedException cloneException) {
-            updatedRide = rideAboutToUpdate;
-            log.error("Failed to clone {}: ", cloneException);
+            result = rideAboutToUpdate;
+            log.error("Failed to clone {}: ", rideAboutToUpdate, cloneException);
         }
-        changeRideStatusIfNeeded(rideRequest, rideAboutToUpdate);
 
-        return updatedRide;
+        return result;
     }
 
     private void changeRideStatusIfNeeded(RideRequest rideRequest, Ride updatableRide) {
