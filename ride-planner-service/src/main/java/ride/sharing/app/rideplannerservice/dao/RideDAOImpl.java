@@ -2,8 +2,10 @@ package ride.sharing.app.rideplannerservice.dao;
 
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ride.sharing.app.rideplannerservice.domain.Ride;
@@ -43,7 +45,8 @@ public class RideDAOImpl implements RideDAO {
     public Mono<Ride> updateRide(Long rideId, RideRequest updateRideRequest) {
         return rideRepository.findById(rideId)
                 .map(ride -> updateRide(updateRideRequest, ride))
-                .flatMap(rideRepository::save);
+                .flatMap(rideRepository::save)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
 
     private Ride updateRide(RideRequest rideRequest, Ride rideAboutToUpdate) {
