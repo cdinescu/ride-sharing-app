@@ -30,7 +30,7 @@ import static ride.sharing.app.rideplannerservice.domain.enums.RideUpdateType.CL
 @ExtendWith(MockitoExtension.class)
 class RideDAOTest {
 
-    public static final Long ID = 1L;
+    private static final Long ID = 1L;
 
     @Mock
     private RideRepository repository;

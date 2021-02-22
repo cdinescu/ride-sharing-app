@@ -2,7 +2,6 @@ package ride.sharing.app.rideplannerservice.data;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
-import org.springframework.r2dbc.core.DatabaseClient;
 import ride.sharing.app.rideplannerservice.domain.Ride;
 import ride.sharing.app.rideplannerservice.domain.RideRequest;
 import ride.sharing.app.rideplannerservice.domain.enums.RideStatus;
@@ -41,14 +40,5 @@ public class TestDataProvider<T> {
         } catch (CloneNotSupportedException e) {
             log.error("Failed to clone object {}: ", expectedRide, e);
         }
-    }
-
-    public static Object insertIntoDatabase(DatabaseClient databaseClient, Ride ride) {
-        return databaseClient
-                .sql("INSERT INTO RIDE (pickup_location, destination, ride_status) VALUES (:pickup, :destination, :ride_status)")
-                .bind("pickup", ride.getPickupLocation())
-                .bind("destination", ride.getDestination())
-                .bind("ride_status", ride.getRideStatus() == null ? "NEW" : ride.getRideStatus().name())
-                .then().block();
     }
 }

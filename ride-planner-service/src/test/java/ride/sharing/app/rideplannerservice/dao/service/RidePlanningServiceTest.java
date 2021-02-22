@@ -7,14 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.annotation.Rollback;
-import reactor.core.publisher.Hooks;
 import reactor.test.StepVerifier;
+import ride.sharing.app.rideplannerservice.data.TestDatabaseInitializer;
 import ride.sharing.app.rideplannerservice.domain.Ride;
 import ride.sharing.app.rideplannerservice.domain.RideRequest;
 import ride.sharing.app.rideplannerservice.domain.enums.RideUpdateType;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static ride.sharing.app.rideplannerservice.data.TestConstants.DESTINATION;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.PICKUP_LOCATION;
@@ -23,7 +20,7 @@ import static ride.sharing.app.rideplannerservice.data.TestConstants.UPDATED_PIC
 import static ride.sharing.app.rideplannerservice.data.TestDataProvider.compareDatabaseEntryWithResult;
 import static ride.sharing.app.rideplannerservice.data.TestDataProvider.createRideEntity;
 import static ride.sharing.app.rideplannerservice.data.TestDataProvider.createRideRequest;
-import static ride.sharing.app.rideplannerservice.data.TestDataProvider.insertIntoDatabase;
+import static ride.sharing.app.rideplannerservice.data.TestDatabaseInitializer.insertIntoDatabase;
 import static ride.sharing.app.rideplannerservice.domain.enums.RideStatus.CANCELLED_BY_CLIENT;
 import static ride.sharing.app.rideplannerservice.domain.enums.RideStatus.CANCELLED_BY_DRIVER;
 import static ride.sharing.app.rideplannerservice.domain.enums.RideStatus.NEW;
@@ -33,28 +30,17 @@ import static ride.sharing.app.rideplannerservice.domain.enums.RideUpdateType.DR
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class RidePlanningServiceTest {
 
-    public static final long FIRST_ID = 1L;
+    private static final long FIRST_ID = 1L;
 
     @Autowired
-    RidePlanningService ridePlanningService;
+    private RidePlanningService ridePlanningService;
 
     @Autowired
-    DatabaseClient databaseClient;
+    private DatabaseClient databaseClient;
 
     @BeforeEach
     void setUp() {
-        Hooks.onOperatorDebug();
-
-        List<String> statements = Arrays.asList(//
-                "DROP TABLE IF EXISTS ride;",
-                "CREATE TABLE ride ( id SERIAL PRIMARY KEY, pickup_location VARCHAR(100), destination VARCHAR(100), ride_status VARCHAR(100));");
-
-        statements.forEach(it -> databaseClient.sql(it)
-                .fetch()
-                .rowsUpdated()
-                .as(StepVerifier::create)
-                .expectNextCount(1)
-                .verifyComplete());
+        TestDatabaseInitializer.initDbTestData(databaseClient);
     }
 
     @AfterEach
