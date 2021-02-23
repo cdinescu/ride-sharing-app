@@ -31,7 +31,6 @@ public class RideDAOImpl implements RideDAO {
         Ride ride = modelMapper.map(rideRequest, Ride.class);
         ride.setRideStatus(RideStatus.NEW);
 
-        // TODO generate EVENT: NEW_RIDE
         return rideRepository.save(ride);
     }
 
