@@ -1,6 +1,8 @@
 server:
   port: 8080
 spring:
+  profiles:
+    active: prod
   r2dbc:
     url: r2dbc:postgresql://192.168.1.144:5432/ride_sharing
     username: postgres
@@ -16,4 +18,7 @@ spring:
         output:
           binder: kafka
           destination: ride-planning-topic
-          content-type: application/json
+          content-type: text/plain
+      producer:
+        key.serializer: org.apache.kafka.common.serialization.StringSerializer
+        value.serializer: org.apache.kafka.common.serialization.StringSerializer
