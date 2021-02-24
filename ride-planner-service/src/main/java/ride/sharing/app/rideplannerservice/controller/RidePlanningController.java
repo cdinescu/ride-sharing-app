@@ -39,8 +39,6 @@ public class RidePlanningController {
 
     @PutMapping("/{id}")
     public Mono<Ride> updateRide(@PathVariable("id") Long id, @RequestBody RideRequest rideRequest, ServerHttpResponse response) {
-        Mono<Ride> rideMono = ridePlanningService.updateRide(id, rideRequest);
-
-        return rideMono;
+        return ridePlanningService.updateRide(id, rideRequest);
     }
 }

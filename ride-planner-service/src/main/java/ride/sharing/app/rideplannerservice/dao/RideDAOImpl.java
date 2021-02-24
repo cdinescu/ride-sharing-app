@@ -11,12 +11,14 @@ import reactor.core.publisher.Mono;
 import ride.sharing.app.rideplannerservice.domain.Ride;
 import ride.sharing.app.rideplannerservice.domain.RideRequest;
 import ride.sharing.app.rideplannerservice.domain.enums.RideStatus;
+import ride.sharing.app.rideplannerservice.domain.opstatus.OperationStatus;
 import ride.sharing.app.rideplannerservice.repository.RideRepository;
 
 @Component
 @Slf4j
 public class RideDAOImpl implements RideDAO {
 
+    public static final boolean RIDE_IS_CHANGED = true;
     private final ModelMapper modelMapper;
 
     private final RideRepository rideRepository;
@@ -31,7 +33,6 @@ public class RideDAOImpl implements RideDAO {
         Ride ride = modelMapper.map(rideRequest, Ride.class);
         ride.setRideStatus(RideStatus.NEW);
 
-        // TODO generate EVENT: NEW_RIDE
         return rideRepository.save(ride);
     }
 
@@ -44,28 +45,41 @@ public class RideDAOImpl implements RideDAO {
     @Override
     public Mono<Ride> updateRide(Long rideId, RideRequest updateRideRequest) {
         return rideRepository.findById(rideId)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                 .map(ride -> updateRide(updateRideRequest, ride))
-                .flatMap(rideRepository::save)
-                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)));
+                .filter(OperationStatus::isChanged)
+                .map(OperationStatus::getRide)
+                .flatMap(rideRepository::save);
     }
 
-    private Ride updateRide(RideRequest rideRequest, Ride rideAboutToUpdate) {
-        Ride result;
+    private OperationStatus updateRide(RideRequest rideRequest, Ride rideAboutToUpdate) {
+        Ride updatedRide;
         log.info("Update of {} triggered by {}", rideAboutToUpdate, rideRequest);
+        OperationStatus result = new OperationStatus(rideAboutToUpdate, !RIDE_IS_CHANGED);
 
         try {
-            result = (Ride) rideAboutToUpdate.clone();
-            result.setPickupLocation(rideRequest.getPickupLocation());
-            result.setDestination(rideRequest.getDestination());
+            updatedRide = getUpdateRide(rideRequest, rideAboutToUpdate);
 
-            changeRideStatusIfNeeded(rideRequest, rideAboutToUpdate);
-            result.setRideStatus(rideAboutToUpdate.getRideStatus());
+            if (!rideAboutToUpdate.equals(updatedRide)) {
+                result.setRide(updatedRide);
+                result.setChanged(RIDE_IS_CHANGED);
+            }
         } catch (CloneNotSupportedException cloneException) {
-            result = rideAboutToUpdate;
             log.error("Failed to clone {}: ", rideAboutToUpdate, cloneException);
         }
 
         return result;
+    }
+
+    private Ride getUpdateRide(RideRequest rideRequest, Ride rideAboutToUpdate) throws CloneNotSupportedException {
+        Ride updatedRide;
+        updatedRide = (Ride) rideAboutToUpdate.clone();
+        updatedRide.setPickupLocation(rideRequest.getPickupLocation());
+        updatedRide.setDestination(rideRequest.getDestination());
+
+        changeRideStatusIfNeeded(rideRequest, rideAboutToUpdate);
+        updatedRide.setRideStatus(rideAboutToUpdate.getRideStatus());
+        return updatedRide;
     }
 
     private void changeRideStatusIfNeeded(RideRequest rideRequest, Ride updatableRide) {

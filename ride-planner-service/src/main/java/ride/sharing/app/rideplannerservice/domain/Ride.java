@@ -8,11 +8,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import ride.sharing.app.rideplannerservice.domain.enums.RideStatus;
 
+import java.io.Serializable;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class Ride implements Cloneable {
+public class Ride implements Cloneable, Serializable {
     @Id
     private Long id;
 
