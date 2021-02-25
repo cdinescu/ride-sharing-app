@@ -1,0 +1,5 @@
+gps.rest.api:
+  endpoint: http://api.positionstack.com/v1/forward
+  key: NO!
+
+server.port: 8080
