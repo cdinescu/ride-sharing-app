@@ -1,0 +1,48 @@
+package com.ridesharing.gps.service.controller;
+
+import com.ridesharing.gps.service.testdata.TestData;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.WebTestClient;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class GeoCodeControllerTest {
+    private static final String BASE_URI = "/geocode";
+
+    @Autowired
+    private WebTestClient webClient;
+
+    @Test
+    public void statusWhenNullQuery() {
+        webClient.get()
+                .uri(BASE_URI)
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .exchange()
+                .expectStatus()
+                .isBadRequest();
+    }
+
+    @Test
+    public void statusWhenEmptyQuery() {
+        webClient.get().uri("/geocode?query=")
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .exchange()
+                .expectStatus()
+                .isBadRequest();
+    }
+
+    @Test
+    public void statusWhenQueryIsOk() {
+        webClient.get().uri("/geocode?query=40.7638435,-73.9729691")
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .equals(TestData.generateAddressResult());
+    }
+
+}
