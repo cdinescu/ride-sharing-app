@@ -1,5 +1,6 @@
 gps.rest.api:
-  endpoint: http://api.positionstack.com/v1/forward
-  key: NO!
+  endpoint: http://api.positionstack.com/v1/reverse
+  key: ${GEOCODE_API_KEY}
+  output: json
 
 server.port: 8080

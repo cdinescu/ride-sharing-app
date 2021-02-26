@@ -18,17 +18,7 @@ public enum RequestParamEnum {
     /**
      * Specify your preferred API output format. Available values: json (default), xml and geojson.
      */
-    OUTPUT_FORMAT("output"),
-    /**
-     * Filter geocoding results by one or multiple comma-separated 2-letter (e.g. AU)
-     * or 3-letter country codes (e.g. AUS). Example: country=AU,CA to filter by Australia and Canada.
-     */
-    COUNTRY("country"),
-    /**
-     * Filter geocoding results by specifying a region. This could be a neighbourhood, district, city, county,
-     * state or administrative area. Example: region=Berlin to filter by locations in Berlin.
-     */
-    REGION("region");
+    OUTPUT_FORMAT("output");
 
     private final String parameterName;
 

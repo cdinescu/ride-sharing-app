@@ -1,9 +1,9 @@
 package com.ridesharing.gps.service.service;
 
-import com.ridesharing.gps.service.domain.GeoCodeRequest;
-import reactor.core.publisher.Flux;
+import com.ridesharing.gps.service.domain.Address;
+import reactor.core.publisher.Mono;
 
 public interface GeoCodeService {
 
-    Flux<String> convertAddressToGeoCode(GeoCodeRequest request);
+    Mono<Address> convertAddressToGeoCode(String gpsCoordinates);
 }

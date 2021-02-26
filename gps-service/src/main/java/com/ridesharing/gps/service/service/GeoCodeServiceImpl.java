@@ -1,42 +1,78 @@
 package com.ridesharing.gps.service.service;
 
-import com.ridesharing.gps.service.domain.GeoCodeRequest;
-import com.ridesharing.gps.service.domain.RequestParamEnum;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ridesharing.gps.service.domain.Address;
+import com.ridesharing.gps.service.domain.AddressResponse;
 import com.ridesharing.gps.service.exception.InvalidGeoCodeRequestException;
 import com.ridesharing.gps.service.restapi.config.GpsRestApiProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
+import org.springframework.web.util.UriBuilder;
+import reactor.core.publisher.Mono;
 
+import java.net.URI;
+
+import static com.ridesharing.gps.service.domain.RequestParamEnum.API_KEY;
+import static com.ridesharing.gps.service.domain.RequestParamEnum.LIMIT;
+import static com.ridesharing.gps.service.domain.RequestParamEnum.OUTPUT_FORMAT;
+import static com.ridesharing.gps.service.domain.RequestParamEnum.QUERY;
+
+@Slf4j
 @Service
 public class GeoCodeServiceImpl implements GeoCodeService {
 
+    public static final String RESULT_LIMIT = "1";
     private final GpsRestApiProperties gpsRestApiProperties;
+
+    private final ObjectMapper mapper;
 
     public GeoCodeServiceImpl(GpsRestApiProperties gpsRestApiProperties) {
         this.gpsRestApiProperties = gpsRestApiProperties;
+        this.mapper = new ObjectMapper();
     }
 
     /**
      * See required parameters here: https://positionstack.com/documentation
      *
-     * @param request the request which is then unmarshalled and sent to the "positionstack" REST API
-     * @return
+     * @param gpsCoordinates the request which is then unmarshalled and sent to the "positionstack" REST API
+     * @return Mono publisher of one address
      */
     @Override
-    public Flux<String> convertAddressToGeoCode(GeoCodeRequest request) {
-        if (request == null || Strings.isBlank(request.getQuery())) {
-            throw new InvalidGeoCodeRequestException(String.format("Improper request: %s", request));
+    public Mono<Address> convertAddressToGeoCode(String gpsCoordinates) {
+        if (Strings.isBlank(gpsCoordinates)) {
+            throw new InvalidGeoCodeRequestException(String.format("Improper request: %s", gpsCoordinates));
         }
 
-        System.out.println("Request: " + request);
-        return gpsRestApiProperties.webClient().get().uri(uriBuilder ->
-                uriBuilder.queryParam(RequestParamEnum.API_KEY.getParameterName(), gpsRestApiProperties.getApiKey())
-                        .queryParam(RequestParamEnum.QUERY.getParameterName(), request.getQuery())
-                        .build()
-        ).retrieve().bodyToFlux(String.class).doOnNext(e -> {
-            System.out.println("Uite: " + e);
-        });
+        log.info("Processing query: {}", gpsCoordinates);
+        return gpsRestApiProperties
+                .webClient()
+                .get()
+                .uri(uriBuilder -> buildUri(gpsCoordinates, uriBuilder))
+                .retrieve()
+                .bodyToMono(String.class)
+                .map(this::mapResponseToAddress);
 
+    }
+
+    private Address mapResponseToAddress(String response) {
+        try {
+            AddressResponse addressResponse = mapper.readValue(response, AddressResponse.class);
+            System.out.println("Boo: " + addressResponse);
+            return addressResponse.getAddressList().get(0);
+        } catch (JsonProcessingException jsonProcessingException) {
+            jsonProcessingException.printStackTrace();
+        }
+        return new Address();
+    }
+
+    private URI buildUri(String gpsCoordinates, UriBuilder uriBuilder) {
+        return uriBuilder
+                .queryParam(API_KEY.getParameterName(), gpsRestApiProperties.getApiKey())
+                .queryParam(QUERY.getParameterName(), gpsCoordinates)
+                .queryParam(LIMIT.getParameterName(), RESULT_LIMIT)
+                .queryParam(OUTPUT_FORMAT.getParameterName(), gpsRestApiProperties.getOutputFormat())
+                .build();
     }
 }

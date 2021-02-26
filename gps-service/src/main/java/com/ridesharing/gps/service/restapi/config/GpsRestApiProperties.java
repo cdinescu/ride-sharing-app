@@ -12,10 +12,14 @@ public class GpsRestApiProperties {
 
     private final String apiKey;
 
+    private final String outputFormat;
+
     public GpsRestApiProperties(@Value("${gps.rest.api.endpoint}") String apiEndpoint,
-                                @Value("${gps.rest.api.key}") String apiKey) {
+                                @Value("${gps.rest.api.key}") String apiKey,
+                                @Value("${gps.rest.api.output}") String outputFormat) {
         this.apiEndpoint = apiEndpoint;
         this.apiKey = apiKey;
+        this.outputFormat = outputFormat;
     }
 
     public WebClient webClient() {
