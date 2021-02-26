@@ -13,7 +13,7 @@ import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class GeoCodeServiceTest {
 
     public static final String GPS_COORDINATES = "38.897675,-77.036547";
