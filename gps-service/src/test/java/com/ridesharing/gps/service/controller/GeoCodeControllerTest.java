@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -43,6 +44,15 @@ class GeoCodeControllerTest {
                 .isOk()
                 .expectBody()
                 .equals(TestData.generateAddressResult());
+    }
+
+    @Test
+    public void checkInvalidQuery() {
+        webClient.get().uri("/geocode?query=A,B")
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .exchange()
+                .expectStatus()
+                .isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
 }

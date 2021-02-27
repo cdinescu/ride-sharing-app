@@ -71,5 +71,6 @@
         <module>gateway-service</module>
         <module>ride-planner-service</module>
         <module>gps-service</module>
+        <module>dynamic-delta-billing-service</module>
     </modules>
 </project>

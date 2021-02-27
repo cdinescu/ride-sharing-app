@@ -18,7 +18,7 @@ public class Address {
     @JsonProperty
     private Float longitude;
     @JsonProperty
-    private Integer number;
+    private String number;
     @JsonProperty("postal_code")
     private String postalCode;
     @JsonProperty

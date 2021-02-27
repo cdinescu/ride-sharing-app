@@ -58,11 +58,16 @@ public class GeoCodeServiceImpl implements GeoCodeService {
 
     private Address mapResponseToAddress(String response) {
         try {
-            AddressResponse addressResponse = mapper.readValue(response, AddressResponse.class);
-            System.out.println("Boo: " + addressResponse);
-            return addressResponse.getAddressList().get(0);
+            var addressResponse = mapper.readValue(response, AddressResponse.class);
+            var addressList = addressResponse.getAddressList();
+
+            if (addressList == null || addressList.isEmpty()) {
+                return new Address();
+            }
+
+            return addressList.get(0);
         } catch (JsonProcessingException jsonProcessingException) {
-            jsonProcessingException.printStackTrace();
+            log.error("Failed to process {}:", response, jsonProcessingException);
         }
         return new Address();
     }
