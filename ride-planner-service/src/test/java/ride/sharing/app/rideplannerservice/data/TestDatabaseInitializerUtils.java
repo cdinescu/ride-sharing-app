@@ -8,9 +8,9 @@ import ride.sharing.app.rideplannerservice.domain.Ride;
 import java.util.Arrays;
 import java.util.List;
 
-public class TestDatabaseInitializer {
+public class TestDatabaseInitializerUtils {
 
-    private TestDatabaseInitializer() {
+    private TestDatabaseInitializerUtils() {
     }
 
     public static void initDbTestData(DatabaseClient databaseClient) {

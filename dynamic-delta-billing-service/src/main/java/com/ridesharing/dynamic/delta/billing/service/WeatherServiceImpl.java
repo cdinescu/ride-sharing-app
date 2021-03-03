@@ -23,7 +23,7 @@ public class WeatherServiceImpl implements WeatherService {
 
     public WeatherServiceImpl(RestApiProperties gpsRestApiProperties) {
         this.gpsRestApiProperties = gpsRestApiProperties;
-        this.mapper = new ObjectMapper();;
+        this.mapper = new ObjectMapper();
     }
 
     /**
@@ -56,8 +56,7 @@ public class WeatherServiceImpl implements WeatherService {
         try {
             JsonNode jsonNode = mapper.readTree(response);
             JsonNode current = jsonNode.get("current");
-            WeatherResponse weatherResponse = mapper.treeToValue(current, WeatherResponse.class);
-            return weatherResponse;
+            return mapper.treeToValue(current, WeatherResponse.class);
         } catch (JsonProcessingException jsonProcessingException) {
             log.error("Failed to process {}:", response, jsonProcessingException);
         }

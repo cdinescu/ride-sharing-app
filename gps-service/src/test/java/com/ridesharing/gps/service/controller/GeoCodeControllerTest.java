@@ -1,6 +1,6 @@
 package com.ridesharing.gps.service.controller;
 
-import com.ridesharing.gps.service.testdata.TestData;
+import com.ridesharing.gps.service.testdata.TestDataUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ class GeoCodeControllerTest {
                 .expectStatus()
                 .isOk()
                 .expectBody()
-                .equals(TestData.generateAddressResult());
+                .equals(TestDataUtils.generateAddressResult());
     }
 
     @Test

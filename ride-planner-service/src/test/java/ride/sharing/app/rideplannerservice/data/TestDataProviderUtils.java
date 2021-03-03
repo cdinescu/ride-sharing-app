@@ -7,9 +7,9 @@ import ride.sharing.app.rideplannerservice.domain.Ride;
 import ride.sharing.app.rideplannerservice.domain.RideRequest;
 
 @Slf4j
-public class TestDataProvider<T> {
+public class TestDataProviderUtils<T> {
 
-    private TestDataProvider() {
+    private TestDataProviderUtils() {
     }
 
     public static RideRequest createRideRequest(String pickupLocation, String destination) {

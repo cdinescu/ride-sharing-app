@@ -3,7 +3,7 @@ package com.ridesharing.gps.service.service;
 import com.ridesharing.gps.service.domain.Address;
 import com.ridesharing.gps.service.exception.InvalidGeoCodeRequestException;
 import com.ridesharing.gps.service.restapi.config.GpsRestApiProperties;
-import com.ridesharing.gps.service.testdata.TestData;
+import com.ridesharing.gps.service.testdata.TestDataUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ class GeoCodeServiceTest {
         Mono<Address> resultFlux = geoCodeService.convertAddressToGeoCode(GPS_COORDINATES);
 
         StepVerifier.create(resultFlux)
-                .expectNext(TestData.generateAddressResult())
+                .expectNext(TestDataUtils.generateAddressResult())
                 .expectComplete()
                 .verify();
     }
