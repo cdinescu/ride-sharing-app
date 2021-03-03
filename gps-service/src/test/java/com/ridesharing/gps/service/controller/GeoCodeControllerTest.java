@@ -1,6 +1,7 @@
 package com.ridesharing.gps.service.controller;
 
 import com.ridesharing.gps.service.testdata.TestData;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,6 +48,7 @@ class GeoCodeControllerTest {
     }
 
     @Test
+    @Disabled
     public void checkInvalidQuery() {
         webClient.get().uri("/geocode?query=A,B")
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)

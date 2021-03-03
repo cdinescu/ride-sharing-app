@@ -1,5 +1,6 @@
 package ride.sharing.app.rideplannerservice.dao;
 
+import com.ridesharing.domain.model.ride.RideStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ride.sharing.app.rideplannerservice.domain.Ride;
 import ride.sharing.app.rideplannerservice.domain.RideRequest;
-import ride.sharing.app.rideplannerservice.domain.enums.RideStatus;
 import ride.sharing.app.rideplannerservice.domain.opstatus.OperationStatus;
 import ride.sharing.app.rideplannerservice.repository.RideRepository;
 

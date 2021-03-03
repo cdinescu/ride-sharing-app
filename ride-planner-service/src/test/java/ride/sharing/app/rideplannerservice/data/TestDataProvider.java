@@ -1,10 +1,10 @@
 package ride.sharing.app.rideplannerservice.data;
 
+import com.ridesharing.domain.model.ride.RideStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import ride.sharing.app.rideplannerservice.domain.Ride;
 import ride.sharing.app.rideplannerservice.domain.RideRequest;
-import ride.sharing.app.rideplannerservice.domain.enums.RideStatus;
 
 @Slf4j
 public class TestDataProvider<T> {

@@ -14,6 +14,9 @@ import reactor.test.StepVerifier;
 import ride.sharing.app.rideplannerservice.domain.Ride;
 import ride.sharing.app.rideplannerservice.repository.RideRepository;
 
+import static com.ridesharing.domain.model.ride.RideStatus.CANCELLED_BY_CLIENT;
+import static com.ridesharing.domain.model.ride.RideStatus.NEW;
+import static com.ridesharing.domain.model.ride.RideUpdateType.CLIENT_CANCELLATION;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.DESTINATION;
@@ -22,9 +25,6 @@ import static ride.sharing.app.rideplannerservice.data.TestConstants.UPDATED_DES
 import static ride.sharing.app.rideplannerservice.data.TestConstants.UPDATED_PICKUP_LOCATION;
 import static ride.sharing.app.rideplannerservice.data.TestDataProvider.createRideEntity;
 import static ride.sharing.app.rideplannerservice.data.TestDataProvider.createRideRequest;
-import static ride.sharing.app.rideplannerservice.domain.enums.RideStatus.CANCELLED_BY_CLIENT;
-import static ride.sharing.app.rideplannerservice.domain.enums.RideStatus.NEW;
-import static ride.sharing.app.rideplannerservice.domain.enums.RideUpdateType.CLIENT_CANCELLATION;
 
 
 @ExtendWith(MockitoExtension.class)
