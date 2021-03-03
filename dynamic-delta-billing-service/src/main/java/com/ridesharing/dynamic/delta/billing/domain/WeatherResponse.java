@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-//@JsonRootName("current")
 public class WeatherResponse {
     private Float temperature;
 
