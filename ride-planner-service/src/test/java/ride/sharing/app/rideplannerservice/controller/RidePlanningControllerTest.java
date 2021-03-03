@@ -11,7 +11,7 @@ import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
-import ride.sharing.app.rideplannerservice.data.TestDatabaseInitializer;
+import ride.sharing.app.rideplannerservice.data.TestDatabaseInitializerUtils;
 import ride.sharing.app.rideplannerservice.domain.Ride;
 
 import static com.ridesharing.domain.model.ride.RideStatus.CANCELLED_BY_CLIENT;
@@ -20,9 +20,9 @@ import static ride.sharing.app.rideplannerservice.data.TestConstants.DESTINATION
 import static ride.sharing.app.rideplannerservice.data.TestConstants.PICKUP_LOCATION;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.UPDATED_DESTINATION;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.UPDATED_PICKUP_LOCATION;
-import static ride.sharing.app.rideplannerservice.data.TestDataProvider.createRideEntity;
-import static ride.sharing.app.rideplannerservice.data.TestDataProvider.createRideRequest;
-import static ride.sharing.app.rideplannerservice.data.TestDatabaseInitializer.insertIntoDatabase;
+import static ride.sharing.app.rideplannerservice.data.TestDataProviderUtils.createRideEntity;
+import static ride.sharing.app.rideplannerservice.data.TestDataProviderUtils.createRideRequest;
+import static ride.sharing.app.rideplannerservice.data.TestDatabaseInitializerUtils.insertIntoDatabase;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class RidePlanningControllerTest {
@@ -44,7 +44,7 @@ class RidePlanningControllerTest {
 
     @BeforeEach
     void setUp() {
-        TestDatabaseInitializer.initDbTestData(databaseClient);
+        TestDatabaseInitializerUtils.initDbTestData(databaseClient);
     }
 
     @Test

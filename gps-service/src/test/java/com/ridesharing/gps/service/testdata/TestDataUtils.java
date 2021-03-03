@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class TestData {
+public class TestDataUtils {
 
     public static Address generateAddressResult() {
         return Address.builder()

@@ -94,13 +94,13 @@ public class RideDAOImpl implements RideDAO {
 
     private void updateStatus(RideRequest rideRequest, Ride updatableRide) {
         switch (rideRequest.getUpdateType()) {
-            case NO_UPDATE:
-                break;
             case CLIENT_CANCELLATION:
                 updatableRide.setRideStatus(RideStatus.CANCELLED_BY_CLIENT);
                 break;
             case DRIVER_CANCELLATION:
                 updatableRide.setRideStatus(RideStatus.CANCELLED_BY_DRIVER);
+                break;
+            default:
                 break;
         }
     }

@@ -23,8 +23,8 @@ import static ride.sharing.app.rideplannerservice.data.TestConstants.DESTINATION
 import static ride.sharing.app.rideplannerservice.data.TestConstants.PICKUP_LOCATION;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.UPDATED_DESTINATION;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.UPDATED_PICKUP_LOCATION;
-import static ride.sharing.app.rideplannerservice.data.TestDataProvider.createRideEntity;
-import static ride.sharing.app.rideplannerservice.data.TestDataProvider.createRideRequest;
+import static ride.sharing.app.rideplannerservice.data.TestDataProviderUtils.createRideEntity;
+import static ride.sharing.app.rideplannerservice.data.TestDataProviderUtils.createRideRequest;
 
 
 @ExtendWith(MockitoExtension.class)
