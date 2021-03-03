@@ -18,6 +18,7 @@ class GeoCodeServiceTest {
 
     public static final String GPS_COORDINATES = "38.897675,-77.036547";
     public static final String EMPTY_QUERY = "";
+    public static final String INVALID_QUERY = "A,B";
 
     @Autowired
     private GpsRestApiProperties gpsRestApiProperties;
@@ -44,6 +45,18 @@ class GeoCodeServiceTest {
     public void convertAddressToGeoCode() {
         Mono<Address> resultFlux = geoCodeService.convertAddressToGeoCode(GPS_COORDINATES);
 
-        StepVerifier.create(resultFlux).expectNext(TestData.generateAddressResult()).expectComplete();
+        StepVerifier.create(resultFlux)
+                .expectNext(TestData.generateAddressResult())
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    public void checkInvalidQuery() {
+        Mono<Address> resultFlux = geoCodeService.convertAddressToGeoCode(INVALID_QUERY);
+
+        StepVerifier.create(resultFlux)
+                .expectError()
+                .verify();
     }
 }
