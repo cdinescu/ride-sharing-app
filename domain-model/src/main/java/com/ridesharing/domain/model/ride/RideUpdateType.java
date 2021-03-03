@@ -1,4 +1,4 @@
-package ride.sharing.app.rideplannerservice.domain.enums;
+package com.ridesharing.domain.model.ride;
 
 public enum RideUpdateType {
     NO_UPDATE,

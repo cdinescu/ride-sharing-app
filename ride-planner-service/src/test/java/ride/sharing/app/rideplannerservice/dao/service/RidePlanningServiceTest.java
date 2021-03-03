@@ -1,5 +1,6 @@
 package ride.sharing.app.rideplannerservice.dao.service;
 
+import com.ridesharing.domain.model.ride.RideUpdateType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,8 +12,12 @@ import reactor.test.StepVerifier;
 import ride.sharing.app.rideplannerservice.data.TestDatabaseInitializer;
 import ride.sharing.app.rideplannerservice.domain.Ride;
 import ride.sharing.app.rideplannerservice.domain.RideRequest;
-import ride.sharing.app.rideplannerservice.domain.enums.RideUpdateType;
 
+import static com.ridesharing.domain.model.ride.RideStatus.CANCELLED_BY_CLIENT;
+import static com.ridesharing.domain.model.ride.RideStatus.CANCELLED_BY_DRIVER;
+import static com.ridesharing.domain.model.ride.RideStatus.NEW;
+import static com.ridesharing.domain.model.ride.RideUpdateType.CLIENT_CANCELLATION;
+import static com.ridesharing.domain.model.ride.RideUpdateType.DRIVER_CANCELLATION;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.DESTINATION;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.PICKUP_LOCATION;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.UPDATED_DESTINATION;
@@ -21,11 +26,6 @@ import static ride.sharing.app.rideplannerservice.data.TestDataProvider.compareD
 import static ride.sharing.app.rideplannerservice.data.TestDataProvider.createRideEntity;
 import static ride.sharing.app.rideplannerservice.data.TestDataProvider.createRideRequest;
 import static ride.sharing.app.rideplannerservice.data.TestDatabaseInitializer.insertIntoDatabase;
-import static ride.sharing.app.rideplannerservice.domain.enums.RideStatus.CANCELLED_BY_CLIENT;
-import static ride.sharing.app.rideplannerservice.domain.enums.RideStatus.CANCELLED_BY_DRIVER;
-import static ride.sharing.app.rideplannerservice.domain.enums.RideStatus.NEW;
-import static ride.sharing.app.rideplannerservice.domain.enums.RideUpdateType.CLIENT_CANCELLATION;
-import static ride.sharing.app.rideplannerservice.domain.enums.RideUpdateType.DRIVER_CANCELLATION;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class RidePlanningServiceTest {

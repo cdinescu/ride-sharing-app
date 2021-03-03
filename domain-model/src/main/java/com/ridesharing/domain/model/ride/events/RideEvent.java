@@ -1,10 +1,10 @@
-package ride.sharing.app.rideplannerservice.events;
+package com.ridesharing.domain.model.ride.events;
 
+import com.ridesharing.domain.model.ride.RideDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ride.sharing.app.rideplannerservice.domain.Ride;
 
 import java.io.Serializable;
 
@@ -14,5 +14,5 @@ import java.io.Serializable;
 @Data
 public class RideEvent implements Serializable {
     private EventType eventType;
-    private Ride ride;
+    private RideDto ride;
 }
