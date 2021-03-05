@@ -6,5 +6,5 @@ import com.stripe.exception.StripeException;
 import reactor.core.publisher.Mono;
 
 public interface PaymentService {
-    Mono<ChargeResponse> charge(ChargeRequest chargeRequest) throws StripeException;
+    Mono<ChargeResponse> charge(ChargeRequest chargeRequest);
 }

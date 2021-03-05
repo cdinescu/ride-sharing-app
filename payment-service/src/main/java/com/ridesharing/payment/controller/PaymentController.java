@@ -22,7 +22,7 @@ public class PaymentController {
     }
 
     @PostMapping
-    public Mono<ChargeResponse> charge(@RequestBody ChargeRequest chargeRequest) throws StripeException {
+    public Mono<ChargeResponse> charge(@RequestBody ChargeRequest chargeRequest)  {
         log.info("Request: {}", chargeRequest);
         Mono<ChargeResponse> chargeResponseMono = paymentService.charge(chargeRequest).doOnNext(response -> log.info("Got: {}", response));
         log.info("Sent request...");

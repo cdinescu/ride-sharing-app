@@ -35,13 +35,14 @@ public class PaymentServiceImpl implements PaymentService {
      * See Stripe API: https://stripe.com/docs/api?lang=java
      */
     @Override
-    public Mono<ChargeResponse> charge(ChargeRequest chargeRequest) throws StripeException {
+    public Mono<ChargeResponse> charge(ChargeRequest chargeRequest) {
         Map<String, Object> chargeParams = new HashMap<>();
         chargeParams.put("amount", chargeRequest.getAmount());
         chargeParams.put("currency", chargeRequest.getCurrency());
         chargeParams.put("description", chargeRequest.getDescription());
         chargeParams.put("source", chargeRequest.getStripeToken());
 
+        //TODO manage StripeException thrown by Charge.create
         return Mono.fromCallable(() -> Charge.create(chargeParams)).map(charge ->
                 ChargeResponse.builder().amount(BigDecimal.valueOf(charge.getAmount()))
                         .amountCaptured(BigDecimal.valueOf(charge.getAmountCaptured()))
