@@ -31,6 +31,9 @@ public class PaymentServiceImpl implements PaymentService {
         Stripe.apiKey = secretKey;
     }
 
+    /**
+     * See Stripe API: https://stripe.com/docs/api?lang=java
+     */
     @Override
     public Mono<ChargeResponse> charge(ChargeRequest chargeRequest) throws StripeException {
         Map<String, Object> chargeParams = new HashMap<>();
