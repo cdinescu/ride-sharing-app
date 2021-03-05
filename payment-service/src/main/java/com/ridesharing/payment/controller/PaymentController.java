@@ -1,0 +1,31 @@
+package com.ridesharing.payment.controller;
+
+import com.ridesharing.payment.domain.model.ChargeRequest;
+import com.ridesharing.payment.domain.model.ChargeResponse;
+import com.ridesharing.payment.service.PaymentService;
+import com.stripe.exception.StripeException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
+
+@Slf4j
+@RestController
+@RequestMapping("/payments")
+public class PaymentController {
+    private final PaymentService paymentService;
+
+    public PaymentController(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+
+    @PostMapping
+    public Mono<ChargeResponse> charge(@RequestBody ChargeRequest chargeRequest) throws StripeException {
+        log.info("Request: {}", chargeRequest);
+        Mono<ChargeResponse> chargeResponseMono = paymentService.charge(chargeRequest).doOnNext(response -> log.info("Got: {}", response));
+        log.info("Sent request...");
+        return chargeResponseMono;
+    }
+}
