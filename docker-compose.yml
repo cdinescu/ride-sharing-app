@@ -33,3 +33,7 @@ services:
       - gateway-service
     environment:
       GEOCODE_API_KEY: ${GEOCODE_API_KEY}
+
+# Networks to be created to facilitate communication between containers
+networks:
+  ridesharing-network:
