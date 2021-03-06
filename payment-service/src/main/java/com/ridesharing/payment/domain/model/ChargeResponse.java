@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Data
 @Builder
 public class ChargeResponse {
-    BigDecimal amount;
-    BigDecimal amountCaptured;
-    String status;
+    private BigDecimal amount;
+    private BigDecimal amountCaptured;
+    private String status;
 }

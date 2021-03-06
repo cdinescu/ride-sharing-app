@@ -5,6 +5,7 @@ import com.ridesharing.payment.domain.model.ChargeResponse;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -14,7 +15,9 @@ import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
+@Slf4j
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
@@ -42,12 +45,27 @@ public class PaymentServiceImpl implements PaymentService {
         chargeParams.put("description", chargeRequest.getDescription());
         chargeParams.put("source", chargeRequest.getStripeToken());
 
-        //TODO manage StripeException thrown by Charge.create
-        return Mono.fromCallable(() -> Charge.create(chargeParams)).map(charge ->
-                ChargeResponse.builder().amount(BigDecimal.valueOf(charge.getAmount()))
-                        .amountCaptured(BigDecimal.valueOf(charge.getAmountCaptured()))
-                        .status(charge.getStatus())
-                        .build()
-        ).subscribeOn(scheduler);
+        return Mono.fromCallable(() -> chargePayment(chargeParams))
+                .filter(Optional::isPresent)
+                .switchIfEmpty(Mono.empty())
+                .map(Optional::get)
+                .map(this::mapChargeToResponse)
+                .subscribeOn(scheduler);
+    }
+
+    private Optional<Charge> chargePayment(Map<String, Object> chargeParams) {
+        try {
+            return Optional.of(Charge.create(chargeParams));
+        } catch (StripeException stripeException) {
+            log.error("Failed to process charge with params: {} ", chargeParams, stripeException);
+        }
+        return Optional.empty();
+    }
+
+    private ChargeResponse mapChargeToResponse(Charge charge) {
+        return ChargeResponse.builder().amount(BigDecimal.valueOf(charge.getAmount()))
+                .amountCaptured(BigDecimal.valueOf(charge.getAmountCaptured()))
+                .status(charge.getStatus())
+                .build();
     }
 }
