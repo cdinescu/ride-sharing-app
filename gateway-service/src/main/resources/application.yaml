@@ -20,5 +20,9 @@ spring:
           uri: lb://gps-service
           predicates:
             - Path=/geocode/**
+        - id: dynamic_billing_service_route
+          uri: lb://dynamic-delta-billing-service
+          predicates:
+            - Path=/dynamic-billing-service/**
 
 server.port: 8082
