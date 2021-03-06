@@ -3,4 +3,4 @@ spring:
     active:
       default
 server:
-  port: 8082
+  port: 0
