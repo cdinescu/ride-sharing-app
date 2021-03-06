@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  eureka-service:
+    build:
+      context: eureka-service/
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    restart: always
+    networks:
+      - ridesharing-network
+  gateway-service:
+    build:
+      context: gateway-service/
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    restart: always
+    networks:
+      - ridesharing-network
+    depends_on:
+      - eureka-service
+  gps-service:
+    build:
+      context: gps-service/
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - ridesharing-network
+    depends_on:
+      - eureka-service
+      - gateway-service
+    environment:
+      GEOCODE_API_KEY: ${GEOCODE_API_KEY}
