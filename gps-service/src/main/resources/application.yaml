@@ -15,3 +15,5 @@ eureka:
 spring:
   application:
     name: gps-service
+
+server.port: 0

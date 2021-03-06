@@ -10,3 +10,15 @@ eureka:
 spring:
   application:
     name: gateway-service
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+    gateway:
+      routes:
+        - id: gps_service_route
+          uri: lb://gps-service
+          predicates:
+            - Path=/geocode/**
+
+server.port: 8082
