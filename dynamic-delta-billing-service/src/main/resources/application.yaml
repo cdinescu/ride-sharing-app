@@ -1,6 +1,6 @@
-server:
-  port: 9090
 spring:
+  application:
+    name: gps-service
   r2dbc:
     url: r2dbc:postgresql://192.168.1.144:5432/pending_rides
     username: postgres
@@ -25,3 +25,14 @@ rest.api:
   endpoint: http://api.weatherstack.com/current
   key: ${WEATHER_API_KEY}
   output: json
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    service-url:
+      defaultZone: http://192.168.1.144:8761/eureka/
+
+server.port: 0
