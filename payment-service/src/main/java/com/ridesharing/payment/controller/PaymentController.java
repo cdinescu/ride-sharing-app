@@ -3,7 +3,6 @@ package com.ridesharing.payment.controller;
 import com.ridesharing.payment.domain.model.ChargeRequest;
 import com.ridesharing.payment.domain.model.ChargeResponse;
 import com.ridesharing.payment.service.PaymentService;
-import com.stripe.exception.StripeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +21,7 @@ public class PaymentController {
     }
 
     @PostMapping
-    public Mono<ChargeResponse> charge(@RequestBody ChargeRequest chargeRequest)  {
+    public Mono<ChargeResponse> charge(@RequestBody ChargeRequest chargeRequest) {
         log.info("Request: {}", chargeRequest);
         Mono<ChargeResponse> chargeResponseMono = paymentService.charge(chargeRequest).doOnNext(response -> log.info("Got: {}", response));
         log.info("Sent request...");
