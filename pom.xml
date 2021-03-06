@@ -73,6 +73,7 @@
     <module>gps-service</module>
     <module>dynamic-delta-billing-service</module>
     <module>domain-model</module>
+    <module>payment-service</module>
   </modules>
   
 </project>
