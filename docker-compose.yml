@@ -1,0 +1,130 @@
+version: '3.8'
+
+services:
+  eureka-service:
+    build:
+      context: eureka-service/
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    restart: always
+    networks:
+      - ridesharing-network
+  config-service:
+    build:
+      context: config-service/
+      dockerfile: Dockerfile
+    ports:
+      - "8012:8012"
+    restart: always
+    networks:
+      - ridesharing-network
+    environment:
+      GIT_ACCESS_TOKEN: ${GIT_ACCESS_TOKEN}
+  gateway-service:
+    build:
+      context: gateway-service/
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    restart: always
+    networks:
+      - ridesharing-network
+    depends_on:
+      - eureka-service
+      - config-service
+  gps-service:
+    build:
+      context: gps-service/
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - ridesharing-network
+    depends_on:
+      - eureka-service
+      - gateway-service
+      - config-service
+    environment:
+      GEOCODE_API_KEY: ${GEOCODE_API_KEY}
+  dynamic-billing-service:
+    build:
+      context: dynamic-delta-billing-service/
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - ridesharing-network
+    depends_on:
+      - eureka-service
+      - gateway-service
+      - config-service
+    environment:
+      WEATHER_API_KEY: ${WEATHER_API_KEY}
+  payment-service:
+    build:
+      context: payment-service/
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - ridesharing-network
+    depends_on:
+      - eureka-service
+      - gateway-service
+      - config-service
+    environment:
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+  gps-tracker-service:
+    build:
+      context: gps-position-tracker-service/
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - ridesharing-network
+        #  - kafka-network
+    depends_on:
+      - eureka-service
+      - gateway-service
+      - zookeeper
+      - kafka
+  ride-planner-service:
+    build:
+      context: ride-planner-service/
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - ridesharing-network
+        #  - kafka-network
+    depends_on:
+      - eureka-service
+      - gateway-service
+      - zookeeper
+      - kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper:6.0.2
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_SYNC_LIMIT: 2
+    ports:
+      - 2181:2181
+    networks:
+            #- kafka-network
+      - ridesharing-network
+  kafka:
+    image: confluentinc/cp-kafka:6.0.2
+    container_name: kafka
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_BROKER_ID: 2
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - 9092:9092
+    networks:
+      - ridesharing-network
+        # - kafka-network
+
+# Networks to be created to facilitate communication between containers
+networks:
+  ridesharing-network:
+          #kafka-network:

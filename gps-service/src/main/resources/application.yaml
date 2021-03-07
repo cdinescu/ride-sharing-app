@@ -3,4 +3,17 @@ gps.rest.api:
   key: ${GEOCODE_API_KEY}
   output: json
 
-server.port: 8080
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    service-url:
+      defaultZone: http://eureka-service:8761/eureka/
+
+spring:
+  application:
+    name: gps-service
+
+server.port: 0
