@@ -1,6 +1,6 @@
 spring:
   application:
-    name: gps-service
+    name: dynamic-billing-service
   r2dbc:
     url: r2dbc:postgresql://192.168.1.144:5432/pending_rides
     username: postgres
