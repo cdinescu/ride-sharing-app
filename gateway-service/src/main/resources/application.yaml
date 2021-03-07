@@ -28,7 +28,7 @@ spring:
           predicates:
             - Path=/payments/**
         - id: gps_tracker_service_route
-          uri: lb://gps-position-tracker-service
+          uri: lb://gps-tracker-service
           predicates:
             - Path=/gps-receiver/**
 

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: gps-position-tracker-service
+    name: gps-tracker-service
   profiles:
     active: prod
   cloud:

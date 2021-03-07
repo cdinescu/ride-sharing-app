@@ -72,7 +72,7 @@ services:
       - config-service
     environment:
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
-  gps-position-tracker-service:
+  gps-tracker-service:
     build:
       context: gps-position-tracker-service/
       dockerfile: Dockerfile
