@@ -33,7 +33,7 @@ services:
       - gateway-service
     environment:
       GEOCODE_API_KEY: ${GEOCODE_API_KEY}
-  dynamic-delta-billing-service:
+  dynamic-billing-service:
     build:
       context: dynamic-delta-billing-service/
       dockerfile: Dockerfile

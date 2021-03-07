@@ -21,7 +21,7 @@ spring:
           predicates:
             - Path=/geocode/**
         - id: dynamic_billing_service_route
-          uri: lb://dynamic-delta-billing-service
+          uri: lb://dynamic-billing-service
           predicates:
             - Path=/dynamic-billing-service/**
 
