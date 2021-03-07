@@ -27,5 +27,9 @@ spring:
           uri: lb://payment-service
           predicates:
             - Path=/payments/**
+        - id: gps_tracker_service_route
+          uri: lb://gps-position-tracker-service
+          predicates:
+            - Path=/gps-receiver/**
 
 server.port: 8082
