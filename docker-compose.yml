@@ -10,6 +10,17 @@ services:
     restart: always
     networks:
       - ridesharing-network
+  config-service:
+    build:
+      context: config-service/
+      dockerfile: Dockerfile
+    ports:
+      - "8012:8012"
+    restart: always
+    networks:
+      - ridesharing-network
+    environment:
+      GIT_ACCESS_TOKEN: ${GIT_ACCESS_TOKEN}
   gateway-service:
     build:
       context: gateway-service/
@@ -21,6 +32,7 @@ services:
       - ridesharing-network
     depends_on:
       - eureka-service
+      - config-service
   gps-service:
     build:
       context: gps-service/
@@ -31,6 +43,7 @@ services:
     depends_on:
       - eureka-service
       - gateway-service
+      - config-service
     environment:
       GEOCODE_API_KEY: ${GEOCODE_API_KEY}
   dynamic-billing-service:
@@ -43,6 +56,7 @@ services:
     depends_on:
       - eureka-service
       - gateway-service
+      - config-service
     environment:
       WEATHER_API_KEY: ${WEATHER_API_KEY}
   payment-service:
@@ -55,6 +69,7 @@ services:
     depends_on:
       - eureka-service
       - gateway-service
+      - config-service
     environment:
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
 
