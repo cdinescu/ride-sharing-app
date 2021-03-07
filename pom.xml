@@ -29,6 +29,8 @@
     <spring-cloud.version>2020.0.1</spring-cloud.version>
             
     <model.mapper.version>2.3.9</model.mapper.version>
+
+    <logstash-logback-encoder.version>6.6</logstash-logback-encoder.version>
   </properties>
       
   <packaging>pom</packaging>
