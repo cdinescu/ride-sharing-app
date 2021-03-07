@@ -85,6 +85,8 @@ services:
       - gateway-service
       - zookeeper
       - kafka
+    ports:
+      - 9090:9090
   ride-planner-service:
     build:
       context: ride-planner-service/
