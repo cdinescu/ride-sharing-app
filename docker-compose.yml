@@ -79,14 +79,12 @@ services:
     restart: always
     networks:
       - ridesharing-network
-      - kafka-network
+        #  - kafka-network
     depends_on:
       - eureka-service
       - gateway-service
       - zookeeper
       - kafka
-    ports:
-      - 9090:9090
   ride-planner-service:
     build:
       context: ride-planner-service/
@@ -94,7 +92,7 @@ services:
     restart: always
     networks:
       - ridesharing-network
-      - kafka-network
+        #  - kafka-network
     depends_on:
       - eureka-service
       - gateway-service
@@ -110,7 +108,8 @@ services:
     ports:
       - 2181:2181
     networks:
-      - kafka-network
+            #- kafka-network
+      - ridesharing-network
   kafka:
     image: confluentinc/cp-kafka:6.0.2
     container_name: kafka
@@ -123,9 +122,9 @@ services:
       - 9092:9092
     networks:
       - ridesharing-network
-      - kafka-network
+        # - kafka-network
 
 # Networks to be created to facilitate communication between containers
 networks:
   ridesharing-network:
-  kafka-network:
+          #kafka-network:

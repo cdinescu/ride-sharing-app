@@ -13,6 +13,7 @@ spring:
     loadbalancer:
       ribbon:
         enabled: false
+    discovery.enabled: true
     gateway:
       routes:
         - id: gps_service_route
@@ -37,3 +38,4 @@ spring:
             - Path=/rides/**
 
 server.port: 8082
+management.endpoints.web.exposure.include: gateway
