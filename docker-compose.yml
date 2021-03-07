@@ -72,7 +72,79 @@ services:
       - config-service
     environment:
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+  gps-position-tracker-service:
+    build:
+      context: gps-position-tracker-service/
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - ridesharing-network
+      - kafka-network
+    depends_on:
+      - eureka-service
+      - gateway-service
+      - zookeeper
+      - kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper:6.0.2
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_SYNC_LIMIT: 2
+    ports:
+      - 2181:2181
+    volumes:
+      - zk-data:/var/lib/zookeeper/data # for Data
+      - zk-txn-logs:/var/lib/zookeeper/log # for transaction logs
+    networks:
+      - kafka-network
+  kafka:
+    image: confluentinc/cp-kafka:6.0.2
+    container_name: kafka
+    environment:
+      ## COnfigure listener here like ip:port for external access and localhost:port for host only access
+      ## or configure localhost:port1 & ip:port2 together for enabling host as well as external access both
+      ## Here Plaintext refers to Protocol for Kafka
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      ### For listening to multiple listeners add the name as follows below with different ports for each
+      # LISTENER_1://localhost:29092,LISTENER_2://10.138.154.16:9092
+      ### Then mention the same in KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+      # KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_BROKER_ID: 2
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - 9092:9092
+#      - 29092:29092 uncomment for multiple listeners and add more ports for each listener
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    networks:
+      - ridesharing-network
+      - kafka-network
 
 # Networks to be created to facilitate communication between containers
 networks:
   ridesharing-network:
+  kafka-network:
+
+############ Enable volumes for mounting for data persistence and volumes in each service
+volumes:
+  kafka-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /var/db/kafka/data
+  zk-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /var/db/zk/data
+  zk-txn-logs:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /var/db/zk/txn-logs

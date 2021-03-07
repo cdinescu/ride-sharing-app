@@ -1,7 +1,6 @@
-server:
-  port: 8080
-
 spring:
+  application:
+    name: gps-position-tracker-service
   profiles:
     active: prod
   cloud:
@@ -10,7 +9,7 @@ spring:
       kafka:
         binder:
           brokers:
-            - localhost:9092
+            - kafka:9092
       bindings:
         output:
           binder: kafka
@@ -19,3 +18,14 @@ spring:
       producer:
         key.serializer: org.apache.kafka.common.serialization.StringSerializer
         value.serializer: org.apache.kafka.common.serialization.StringSerializer
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    service-url:
+      defaultZone: http://eureka-service:8761/eureka/
+
+server.port: 0
