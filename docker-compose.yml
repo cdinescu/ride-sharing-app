@@ -45,6 +45,18 @@ services:
       - gateway-service
     environment:
       WEATHER_API_KEY: ${WEATHER_API_KEY}
+  payment-service:
+    build:
+      context: payment-service/
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - ridesharing-network
+    depends_on:
+      - eureka-service
+      - gateway-service
+    environment:
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
 
 # Networks to be created to facilitate communication between containers
 networks:

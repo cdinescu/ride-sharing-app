@@ -1,4 +1,8 @@
 STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
 connection.pool.size: 20
 
-server.port: 8080
+spring:
+  application:
+    name: payment-service
+
+server.port: 0
