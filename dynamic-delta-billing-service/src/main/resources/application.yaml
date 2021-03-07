@@ -33,6 +33,6 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     service-url:
-      defaultZone: http://192.168.1.144:8761/eureka/
+      defaultZone: http://eureka-service:8761/eureka/
 
 server.port: 0
