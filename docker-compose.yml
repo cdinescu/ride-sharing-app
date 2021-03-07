@@ -85,6 +85,19 @@ services:
       - gateway-service
       - zookeeper
       - kafka
+  ride-planner-service:
+    build:
+      context: ride-planner-service/
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - ridesharing-network
+      - kafka-network
+    depends_on:
+      - eureka-service
+      - gateway-service
+      - zookeeper
+      - kafka
   zookeeper:
     image: confluentinc/cp-zookeeper:6.0.2
     container_name: zookeeper

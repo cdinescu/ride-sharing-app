@@ -31,5 +31,9 @@ spring:
           uri: lb://gps-tracker-service
           predicates:
             - Path=/gps-receiver/**
+        - id: ride_planner_service_route
+          uri: lb://ride-planner-service
+          predicates:
+            - Path=/rides/**
 
 server.port: 8082
