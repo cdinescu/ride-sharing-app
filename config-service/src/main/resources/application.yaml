@@ -12,3 +12,10 @@ spring:
           searchPaths: gateway-service
 server:
   port: 8012
+
+management:
+  endpoints:
+    enabled-by-default: false
+  endpoint:
+    info:
+      enabled: true
