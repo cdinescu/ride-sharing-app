@@ -1,32 +1,5 @@
-eureka:
-  instance:
-    preferIpAddress: true
-  client:
-    registerWithEureka: true
-    fetchRegistry: true
-    service-url:
-      defaultZone: http://192.168.1.144:8761/eureka/
-
 spring:
   application:
     name: gateway-service
-  cloud:
-    loadbalancer:
-      ribbon:
-        enabled: false
-    gateway:
-      routes:
-        - id: gps_service_route
-          uri: lb://gps-service
-          predicates:
-            - Path=/geocode/**
-        - id: dynamic_billing_service_route
-          uri: lb://dynamic-billing-service
-          predicates:
-            - Path=/dynamic-billing-service/**
-        - id: payment_service_route
-          uri: lb://payment-service
-          predicates:
-            - Path=/payments/**
 
 server.port: 8082
