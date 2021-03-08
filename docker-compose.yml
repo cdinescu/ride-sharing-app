@@ -79,7 +79,6 @@ services:
     restart: always
     networks:
       - ridesharing-network
-        #  - kafka-network
     depends_on:
       - eureka-service
       - gateway-service
@@ -99,7 +98,10 @@ services:
       - zookeeper
       - kafka
     environment:
-      - "SPRING_PROFILES_ACTIVE=docker"
+      - "SPRING_PROFILES_ACTIVE=docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
   zookeeper:
     image: confluentinc/cp-zookeeper:6.0.2
     container_name: zookeeper
@@ -124,7 +126,6 @@ services:
       - 9092:9092
     networks:
       - ridesharing-network
-        # - kafka-network
 # ELK
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
@@ -133,18 +134,23 @@ services:
     environment:
       - "discovery.type=single-node"
     volumes:
-      - ./elasticsearch/data:/usr/share/elasticsearch/data:rw              # Persistence data
+      - data:/usr/share/elasticsearch/data:rw              # Persistence data
+    networks:
+      - ridesharing-network
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.2.0
     ports:
       - "25826:25826"
       - "5044:5044"
+      - "8081:8081"
     volumes:
       - ./ELK/logstash/pipeline:/usr/share/logstash/pipeline:ro                # Pipeline configuration
     restart: on-failure
     depends_on:
       - elasticsearch
+    networks:
+      - ridesharing-network
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.2.0
@@ -153,6 +159,8 @@ services:
     restart: on-failure
     depends_on:
       - elasticsearch
+    networks:
+      - ridesharing-network
 
   filebeat:
     image: docker.elastic.co/beats/filebeat:7.2.0
@@ -165,8 +173,13 @@ services:
     restart: on-failure
     depends_on:
       - logstash
+    networks:
+      - ridesharing-network
 
 # Networks to be created to facilitate communication between containers
 networks:
   ridesharing-network:
-          #kafka-network:
+
+volumes:
+  data:
+    driver: local

@@ -21,5 +21,7 @@ filebeat.autodiscover:
 
 output.logstash:
   hosts: "logstash:5044"
+  ttl: "15m"
+  pipelining: 0
 
 logging.metrics.enabled: false
