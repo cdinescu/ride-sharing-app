@@ -1,8 +1,8 @@
 package com.ridesharing.gps.service.service;
 
+import com.ridesharing.commons.RestApiProperties;
 import com.ridesharing.gps.service.domain.Address;
 import com.ridesharing.gps.service.exception.InvalidGeoCodeRequestException;
-import com.ridesharing.gps.service.restapi.config.GpsRestApiProperties;
 import com.ridesharing.gps.service.testdata.TestDataUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class GeoCodeServiceTest {
     public static final String INVALID_QUERY = "A,B";
 
     @Autowired
-    private GpsRestApiProperties gpsRestApiProperties;
+    private RestApiProperties gpsRestApiProperties;
     private GeoCodeService geoCodeService;
 
     @BeforeEach

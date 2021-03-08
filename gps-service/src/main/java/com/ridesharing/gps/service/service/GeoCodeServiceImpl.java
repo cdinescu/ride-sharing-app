@@ -2,10 +2,10 @@ package com.ridesharing.gps.service.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ridesharing.commons.RestApiProperties;
 import com.ridesharing.gps.service.domain.Address;
 import com.ridesharing.gps.service.domain.AddressResponse;
 import com.ridesharing.gps.service.exception.InvalidGeoCodeRequestException;
-import com.ridesharing.gps.service.restapi.config.GpsRestApiProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
@@ -24,11 +24,11 @@ import static com.ridesharing.gps.service.domain.RequestParamEnum.QUERY;
 public class GeoCodeServiceImpl implements GeoCodeService {
 
     public static final String RESULT_LIMIT = "1";
-    private final GpsRestApiProperties gpsRestApiProperties;
+    private final RestApiProperties gpsRestApiProperties;
 
     private final ObjectMapper mapper;
 
-    public GeoCodeServiceImpl(GpsRestApiProperties gpsRestApiProperties) {
+    public GeoCodeServiceImpl(RestApiProperties gpsRestApiProperties) {
         this.gpsRestApiProperties = gpsRestApiProperties;
         this.mapper = new ObjectMapper();
     }
