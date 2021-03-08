@@ -8,7 +8,7 @@ class GpsPositionTrackerServiceApplicationTests {
 
     @Test
     void contextLoads() {
-    	log.info("To be done in the future...");
+        log.info("To be done in the future...");
     }
 
 }

@@ -18,7 +18,7 @@ class GeoCodeControllerTest {
     private WebTestClient webClient;
 
     @Test
-    public void statusWhenNullQuery() {
+    void statusWhenNullQuery() {
         webClient.get()
                 .uri(BASE_URI)
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
@@ -28,7 +28,7 @@ class GeoCodeControllerTest {
     }
 
     @Test
-    public void statusWhenEmptyQuery() {
+    void statusWhenEmptyQuery() {
         webClient.get().uri("/geocode?query=")
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
@@ -37,7 +37,7 @@ class GeoCodeControllerTest {
     }
 
     @Test
-    public void statusWhenQueryIsOk() {
+    void statusWhenQueryIsOk() {
         webClient.get().uri("/geocode?query=40.7638435,-73.9729691")
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
@@ -49,7 +49,7 @@ class GeoCodeControllerTest {
 
     @Test
     @Disabled
-    public void checkInvalidQuery() {
+    void checkInvalidQuery() {
         webClient.get().uri("/geocode?query=A,B")
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()

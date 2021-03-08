@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @Data
-public class Ride implements Cloneable, Serializable {
+public class Ride implements Serializable {
     @Id
     private Long id;
 
@@ -27,8 +27,12 @@ public class Ride implements Cloneable, Serializable {
     @Column("ride_status")
     private RideStatus rideStatus;
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public Ride copy()  {
+        return Ride.builder()
+                .id(id)
+                .pickupLocation(pickupLocation)
+                .destination(destination)
+                .rideStatus(rideStatus)
+                .build();
     }
 }
