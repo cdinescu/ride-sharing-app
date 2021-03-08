@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    config:
+      enabled: false
+    discovery:
+      enabled: false
+
+rest.api:
+  endpoint: http://api.weatherstack.com/current
+  key: ${WEATHER_API_KEY}
+  output: json

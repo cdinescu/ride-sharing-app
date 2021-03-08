@@ -1,8 +1,9 @@
 spring:
-  profiles:
-    active: test
   cloud:
     config:
       enabled: false
     discovery:
       enabled: false
+
+STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+connection.pool.size: 20
