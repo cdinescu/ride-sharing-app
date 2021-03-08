@@ -14,13 +14,4 @@
     <spring-boot.repackage.skip>true</spring-boot.repackage.skip>
   </properties>
 
-  <dependencies>
-    <!-- Utility dependencies -->
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <optional>true</optional>
-    </dependency>
-  </dependencies>
-
 </project>
