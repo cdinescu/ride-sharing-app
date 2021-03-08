@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   eureka-service:
+    container_name: eureka-service
     build:
       context: eureka-service/
       dockerfile: Dockerfile
@@ -10,7 +11,14 @@ services:
     restart: always
     networks:
       - ridesharing-network
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+
   config-service:
+    container_name: config-service
     build:
       context: config-service/
       dockerfile: Dockerfile
@@ -21,7 +29,13 @@ services:
       - ridesharing-network
     environment:
       GIT_ACCESS_TOKEN: ${GIT_ACCESS_TOKEN}
+      SPRING_PROFILES_ACTIVE: "docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+
   gateway-service:
+    container_name: gateway-service
     build:
       context: gateway-service/
       dockerfile: Dockerfile
@@ -33,7 +47,14 @@ services:
     depends_on:
       - eureka-service
       - config-service
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+
   gps-service:
+    container_name: gps-service
     build:
       context: gps-service/
       dockerfile: Dockerfile
@@ -46,7 +67,13 @@ services:
       - config-service
     environment:
       GEOCODE_API_KEY: ${GEOCODE_API_KEY}
+      SPRING_PROFILES_ACTIVE: "docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+ 
   dynamic-billing-service:
+    container_name: dynamic-billing-service
     build:
       context: dynamic-delta-billing-service/
       dockerfile: Dockerfile
@@ -59,7 +86,13 @@ services:
       - config-service
     environment:
       WEATHER_API_KEY: ${WEATHER_API_KEY}
+      SPRING_PROFILES_ACTIVE: "docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+  
   payment-service:
+    container_name: payment-service
     build:
       context: payment-service/
       dockerfile: Dockerfile
@@ -72,32 +105,49 @@ services:
       - config-service
     environment:
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      SPRING_PROFILES_ACTIVE: "docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+  
   gps-tracker-service:
+    container_name: gps-tracker-service
     build:
       context: gps-position-tracker-service/
       dockerfile: Dockerfile
     restart: always
     networks:
       - ridesharing-network
-        #  - kafka-network
     depends_on:
       - eureka-service
       - gateway-service
       - zookeeper
       - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+  
   ride-planner-service:
+    container_name: ride-planner-service
     build:
       context: ride-planner-service/
       dockerfile: Dockerfile
     restart: always
     networks:
       - ridesharing-network
-        #  - kafka-network
     depends_on:
       - eureka-service
       - gateway-service
       - zookeeper
       - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+  
   zookeeper:
     image: confluentinc/cp-zookeeper:6.0.2
     container_name: zookeeper
@@ -108,8 +158,8 @@ services:
     ports:
       - 2181:2181
     networks:
-            #- kafka-network
       - ridesharing-network
+  
   kafka:
     image: confluentinc/cp-kafka:6.0.2
     container_name: kafka
@@ -122,9 +172,61 @@ services:
       - 9092:9092
     networks:
       - ridesharing-network
-        # - kafka-network
+
+# ELK + filebeat stack
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+    ports:
+      - "9200:9200"
+    environment:
+      - "discovery.type=single-node"
+    volumes:
+      - data:/usr/share/elasticsearch/data:rw              # Persistence data
+    networks:
+      - ridesharing-network
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.2.0
+    ports:
+      - "25826:25826"
+      - "5044:5044"
+      - "8081:8081"
+    volumes:
+      - ./ELK/logstash/pipeline:/usr/share/logstash/pipeline:ro                # Pipeline configuration
+    restart: on-failure
+    depends_on:
+      - elasticsearch
+    networks:
+      - ridesharing-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.2.0
+    ports:
+      - "5601:5601"
+    restart: on-failure
+    depends_on:
+      - elasticsearch
+    networks:
+      - ridesharing-network
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.2.0
+    volumes:
+      - ./ELK/filebeat/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro # Configuration file
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro           # Docker logs
+      - /var/run/docker.sock:/var/run/docker.sock:ro                       # Additional information about containers
+      - ./filebeat/data:/usr/share/filebeat/data:rw                        # Persistence data
+    user: root                                                             # Allow access to log files and docker.sock
+    restart: on-failure
+    depends_on:
+      - logstash
+    networks:
+      - ridesharing-network
 
 # Networks to be created to facilitate communication between containers
 networks:
   ridesharing-network:
-          #kafka-network:
+
+volumes:
+  data:
+    driver: local

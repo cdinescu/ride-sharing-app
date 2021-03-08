@@ -29,6 +29,8 @@
     <spring-cloud.version>2020.0.1</spring-cloud.version>
             
     <model.mapper.version>2.3.9</model.mapper.version>
+
+    <logstash-logback-encoder.version>6.6</logstash-logback-encoder.version>
   </properties>
       
   <packaging>pom</packaging>
@@ -81,6 +83,19 @@
       <groupId>org.modelmapper</groupId>
       <artifactId>modelmapper</artifactId>
       <version>${model.mapper.version}</version>
+    </dependency>
+
+    <!-- Logback encoder for Logstash -->
+    <dependency>
+      <groupId>net.logstash.logback</groupId>
+      <artifactId>logstash-logback-encoder</artifactId>
+      <version>${logstash-logback-encoder.version}</version>
+    </dependency>
+
+    <!-- Spring Cloud Sleuth -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-sleuth</artifactId>
     </dependency>
 
     <!-- Testing dependencies -->
