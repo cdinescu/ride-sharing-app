@@ -10,6 +10,12 @@ services:
     restart: always
     networks:
       - ridesharing-network
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+
   config-service:
     build:
       context: config-service/
@@ -21,6 +27,12 @@ services:
       - ridesharing-network
     environment:
       GIT_ACCESS_TOKEN: ${GIT_ACCESS_TOKEN}
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+
   gateway-service:
     build:
       context: gateway-service/
@@ -33,6 +45,12 @@ services:
     depends_on:
       - eureka-service
       - config-service
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+
   gps-service:
     build:
       context: gps-service/
@@ -46,6 +64,12 @@ services:
       - config-service
     environment:
       GEOCODE_API_KEY: ${GEOCODE_API_KEY}
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+ 
   dynamic-billing-service:
     build:
       context: dynamic-delta-billing-service/
@@ -59,6 +83,12 @@ services:
       - config-service
     environment:
       WEATHER_API_KEY: ${WEATHER_API_KEY}
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+  
   payment-service:
     build:
       context: payment-service/
@@ -72,6 +102,12 @@ services:
       - config-service
     environment:
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+  
   gps-tracker-service:
     build:
       context: gps-position-tracker-service/
@@ -84,6 +120,12 @@ services:
       - gateway-service
       - zookeeper
       - kafka
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker,prod"
+    labels:
+      collect_logs_with_filebeat: "true"
+      decode_log_event_to_json_object: "true"
+  
   ride-planner-service:
     build:
       context: ride-planner-service/
@@ -102,6 +144,7 @@ services:
     labels:
       collect_logs_with_filebeat: "true"
       decode_log_event_to_json_object: "true"
+  
   zookeeper:
     image: confluentinc/cp-zookeeper:6.0.2
     container_name: zookeeper
@@ -112,8 +155,8 @@ services:
     ports:
       - 2181:2181
     networks:
-            #- kafka-network
       - ridesharing-network
+  
   kafka:
     image: confluentinc/cp-kafka:6.0.2
     container_name: kafka
@@ -126,7 +169,8 @@ services:
       - 9092:9092
     networks:
       - ridesharing-network
-# ELK
+
+# ELK + filebeat stack
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
     ports:
