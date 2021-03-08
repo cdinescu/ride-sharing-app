@@ -53,32 +53,27 @@ public class RideDAOImpl implements RideDAO {
     }
 
     private OperationStatus updateRide(RideRequest rideRequest, Ride rideAboutToUpdate) {
-        Ride updatedRide;
         log.info("Update of {} triggered by {}", rideAboutToUpdate, rideRequest);
+
         OperationStatus result = new OperationStatus(rideAboutToUpdate, !RIDE_IS_CHANGED);
+        Ride updatedRide = getUpdateRide(rideRequest, rideAboutToUpdate);
 
-        try {
-            updatedRide = getUpdateRide(rideRequest, rideAboutToUpdate);
-
-            if (!rideAboutToUpdate.equals(updatedRide)) {
-                result.setRide(updatedRide);
-                result.setChanged(RIDE_IS_CHANGED);
-            }
-        } catch (CloneNotSupportedException cloneException) {
-            log.error("Failed to clone {}: ", rideAboutToUpdate, cloneException);
+        if (!rideAboutToUpdate.equals(updatedRide)) {
+            result.setRide(updatedRide);
+            result.setChanged(RIDE_IS_CHANGED);
         }
 
         return result;
     }
 
-    private Ride getUpdateRide(RideRequest rideRequest, Ride rideAboutToUpdate) throws CloneNotSupportedException {
-        Ride updatedRide;
-        updatedRide = (Ride) rideAboutToUpdate.clone();
+    private Ride getUpdateRide(RideRequest rideRequest, Ride rideAboutToUpdate) {
+        Ride updatedRide = rideAboutToUpdate.copy();
         updatedRide.setPickupLocation(rideRequest.getPickupLocation());
         updatedRide.setDestination(rideRequest.getDestination());
 
         changeRideStatusIfNeeded(rideRequest, rideAboutToUpdate);
         updatedRide.setRideStatus(rideAboutToUpdate.getRideStatus());
+
         return updatedRide;
     }
 

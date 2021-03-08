@@ -11,15 +11,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @Data
-public class RideDto implements Cloneable, Serializable  {
+public class RideDto implements Serializable {
     private String pickupLocation;
 
     private String destination;
 
     private RideStatus rideStatus;
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
 }

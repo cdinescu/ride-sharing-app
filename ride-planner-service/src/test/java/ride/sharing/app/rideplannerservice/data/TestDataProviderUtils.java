@@ -1,12 +1,10 @@
 package ride.sharing.app.rideplannerservice.data;
 
 import com.ridesharing.domain.model.ride.RideStatus;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import ride.sharing.app.rideplannerservice.domain.Ride;
 import ride.sharing.app.rideplannerservice.domain.RideRequest;
 
-@Slf4j
 public class TestDataProviderUtils<T> {
 
     private TestDataProviderUtils() {
@@ -32,13 +30,9 @@ public class TestDataProviderUtils<T> {
     }
 
     public static void compareDatabaseEntryWithResult(Ride expectedRide, Ride ride) {
-        try {
-            Ride clonedRide = (Ride) expectedRide.clone();
-            clonedRide.setId(ride.getId());
+        Ride clonedRide = expectedRide.copy();
+        clonedRide.setId(ride.getId());
 
-            Assertions.assertEquals(ride, clonedRide);
-        } catch (CloneNotSupportedException e) {
-            log.error("Failed to clone object {}: ", expectedRide, e);
-        }
+        Assertions.assertEquals(ride, clonedRide);
     }
 }
