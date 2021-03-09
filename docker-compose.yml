@@ -234,7 +234,7 @@ services:
       - ./ELK/filebeat/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro # Configuration file
       - /var/lib/docker/containers:/var/lib/docker/containers:ro           # Docker logs
       - /var/run/docker.sock:/var/run/docker.sock:ro                       # Additional information about containers
-      - ./filebeat/data:/usr/share/filebeat/data:rw                        # Persistence data
+      - filebeat:/usr/share/filebeat/data:rw                        # Persistence data
     user: root                                                             # Allow access to log files and docker.sock
     restart: on-failure
     depends_on:
@@ -248,6 +248,8 @@ networks:
 
 volumes:
   data:
+    driver: local
+  filebeat:
     driver: local
   postgres_data:
     driver: local
