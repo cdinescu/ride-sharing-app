@@ -1,7 +1,7 @@
 package com.ridesharing.dynamic.delta.billing.service;
 
+import com.ridesharing.commons.RestApiProperties;
 import com.ridesharing.dynamic.delta.billing.domain.WeatherResponse;
-import com.ridesharing.dynamic.delta.billing.restapi.config.RestApiProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
