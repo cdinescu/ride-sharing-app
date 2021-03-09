@@ -25,6 +25,13 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
     </dependency>
+
+    <!-- Open API -->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-webflux-ui</artifactId>
+      <version>${open.api.version}</version>
+    </dependency>
   </dependencies>
 
 </project>
