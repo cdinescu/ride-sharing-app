@@ -145,6 +145,10 @@ services:
       - ride-planning-postgres
     environment:
       SPRING_PROFILES_ACTIVE: "docker,prod"
+      RPS_POSTGRES_USER: ${RPS_POSTGRES_USER}
+      RPS_POSTGRES_PASSWORD: ${RPS_POSTGRES_PASSWORD}
+      RPS_POSTGRES_DB: ${RPS_POSTGRES_DB}
+      RPS_DB_PORT: 5432
     labels:
       collect_logs_with_filebeat: "true"
       decode_log_event_to_json_object: "true"
@@ -156,9 +160,9 @@ services:
     networks:
       - ridesharing-network
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ride_sharing
+      POSTGRES_USER: ${RPS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${RPS_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${RPS_POSTGRES_DB}
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres_data:/var/lib/postgresql/data              # Persistence data
