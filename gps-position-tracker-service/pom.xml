@@ -48,6 +48,14 @@
       <artifactId>spring-kafka-test</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- Open API -->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-webflux-ui</artifactId>
+      <version>${open.api.version}</version>
+    </dependency>
+
   </dependencies>
 
 </project>
