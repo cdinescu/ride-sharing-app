@@ -142,11 +142,30 @@ services:
       - gateway-service
       - zookeeper
       - kafka
+      - ride-planning-postgres
     environment:
       SPRING_PROFILES_ACTIVE: "docker,prod"
+      RPS_POSTGRES_USER: ${RPS_POSTGRES_USER}
+      RPS_POSTGRES_PASSWORD: ${RPS_POSTGRES_PASSWORD}
+      RPS_POSTGRES_DB: ${RPS_POSTGRES_DB}
+      RPS_DB_PORT: 5432
     labels:
       collect_logs_with_filebeat: "true"
       decode_log_event_to_json_object: "true"
+  ride-planning-postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - ridesharing-network
+    environment:
+      POSTGRES_USER: ${RPS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${RPS_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${RPS_POSTGRES_DB}
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data              # Persistence data
   
   zookeeper:
     image: confluentinc/cp-zookeeper:6.0.2
@@ -215,7 +234,7 @@ services:
       - ./ELK/filebeat/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro # Configuration file
       - /var/lib/docker/containers:/var/lib/docker/containers:ro           # Docker logs
       - /var/run/docker.sock:/var/run/docker.sock:ro                       # Additional information about containers
-      - ./filebeat/data:/usr/share/filebeat/data:rw                        # Persistence data
+      - filebeat:/usr/share/filebeat/data:rw                        # Persistence data
     user: root                                                             # Allow access to log files and docker.sock
     restart: on-failure
     depends_on:
@@ -229,4 +248,8 @@ networks:
 
 volumes:
   data:
+    driver: local
+  filebeat:
+    driver: local
+  postgres_data:
     driver: local

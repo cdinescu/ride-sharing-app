@@ -4,9 +4,9 @@ spring:
   profiles:
     active: prod
   r2dbc:
-    url: r2dbc:postgresql://192.168.1.144:5432/ride_sharing
-    username: postgres
-    password: mysecretpassword
+    url: r2dbc:postgresql://ride-planning-postgres:${RPS_DB_PORT}/${RPS_POSTGRES_DB}
+    username: ${RPS_POSTGRES_USER}
+    password: ${RPS_POSTGRES_PASSWORD}
   cloud:
     stream:
       default-binder: kafka
