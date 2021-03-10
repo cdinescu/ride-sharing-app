@@ -10,6 +10,15 @@ spring:
           password: ${GIT_ACCESS_TOKEN}
           clone-on-start: true
           searchPaths: {application}
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    service-url:
+      defaultZone: http://eureka-service:8761/eureka/
+
 server:
   port: 8012
 
