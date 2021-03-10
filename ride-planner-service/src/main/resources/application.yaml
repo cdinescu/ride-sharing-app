@@ -1,7 +1,6 @@
 spring:
-  profiles:
-    active: prod
-
+  application:
+    name: ride-planner-service
 eureka:
   instance:
     preferIpAddress: true

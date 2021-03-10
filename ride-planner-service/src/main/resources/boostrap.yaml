@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: ride-planner-service
   cloud:
     discovery: enabled
     config:
