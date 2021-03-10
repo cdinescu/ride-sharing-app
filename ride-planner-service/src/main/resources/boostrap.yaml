@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: ride-planner-service
+  cloud:
+    discovery: enabled
+    config:
+      service-id: config-service
+      failFast: true
+      retry:
+        maxAttempts: 20

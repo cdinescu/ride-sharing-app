@@ -1,27 +1,7 @@
 spring:
-  application:
-    name: ride-planner-service
   profiles:
     active: prod
-  r2dbc:
-    url: r2dbc:postgresql://ride-planning-postgres:${RPS_DB_PORT}/${RPS_POSTGRES_DB}
-    username: ${RPS_POSTGRES_USER}
-    password: ${RPS_POSTGRES_PASSWORD}
-  cloud:
-    stream:
-      default-binder: kafka
-      kafka:
-        binder:
-          brokers:
-            - kafka:9092
-      bindings:
-        output:
-          binder: kafka
-          destination: ride-planning-topic
-          content-type: text/plain
-      producer:
-        key.serializer: org.apache.kafka.common.serialization.StringSerializer
-        value.serializer: org.apache.kafka.common.serialization.StringSerializer
+
 eureka:
   instance:
     preferIpAddress: true
