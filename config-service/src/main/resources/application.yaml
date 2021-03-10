@@ -9,7 +9,7 @@ spring:
           username: cdinescu
           password: ${GIT_ACCESS_TOKEN}
           clone-on-start: true
-          searchPaths: gateway-service
+          searchPaths: {application}
 server:
   port: 8012
 
@@ -19,3 +19,7 @@ management:
   endpoint:
     info:
       enabled: true
+
+logging.level.org.springframework:
+  cloud: debug
+  web: debug
