@@ -96,6 +96,12 @@
       <version>${logstash-logback-encoder.version}</version>
     </dependency>
 
+    <!-- Enable the processing of bootstrap.yaml -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-bootstrap</artifactId>
+    </dependency>
+
     <!-- Spring Cloud Sleuth -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
