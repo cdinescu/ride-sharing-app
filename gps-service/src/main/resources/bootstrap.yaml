@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: gps-service
+  cloud:
+    discovery: enabled
+    config:
+      uri: http://config-service:8012
+      failFast: true
+      retry:
+        maxAttempts: 20
+
+server.port: 0
