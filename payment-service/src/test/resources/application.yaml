@@ -5,5 +5,5 @@ spring:
     discovery:
       enabled: false
 
-STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+SECRET_KEY: ${STRIPE_SECRET_KEY}
 connection.pool.size: 20

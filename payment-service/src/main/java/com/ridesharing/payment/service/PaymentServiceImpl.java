@@ -24,7 +24,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final String secretKey;
     private final Scheduler scheduler;
 
-    public PaymentServiceImpl(@Value("${STRIPE_SECRET_KEY}") String secretKey, Scheduler scheduler) {
+    public PaymentServiceImpl(@Value("${SECRET_KEY}") String secretKey, Scheduler scheduler) {
         this.secretKey = secretKey;
         this.scheduler = scheduler;
     }
