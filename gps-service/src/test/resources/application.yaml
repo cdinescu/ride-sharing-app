@@ -1,10 +1,3 @@
-spring:
-  cloud:
-    config:
-      enabled: false
-    discovery:
-      enabled: false
-
 gps.rest.api:
   endpoint: http://api.positionstack.com/v1/reverse
   key: ${GEOCODE_API_KEY}
