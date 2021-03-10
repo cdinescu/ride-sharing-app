@@ -1,6 +1,3 @@
-spring:
-  application:
-    name: ride-planner-service
 eureka:
   instance:
     preferIpAddress: true

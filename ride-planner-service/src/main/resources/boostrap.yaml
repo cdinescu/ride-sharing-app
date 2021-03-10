@@ -4,7 +4,7 @@ spring:
   cloud:
     discovery: enabled
     config:
-      service-id: config-service
+      uri: http://config-service:8012
       failFast: true
       retry:
         maxAttempts: 20
