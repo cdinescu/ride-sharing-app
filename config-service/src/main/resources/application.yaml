@@ -9,7 +9,7 @@ spring:
           username: cdinescu
           password: ${GIT_ACCESS_TOKEN}
           clone-on-start: true
-          searchPaths: ride-planner-service,gps-service
+          searchPaths: ride-planner-service,gps-service,payment-service
 eureka:
   instance:
     preferIpAddress: true

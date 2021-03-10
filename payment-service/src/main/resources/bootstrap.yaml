@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: payment-service
+  cloud:
+    discovery: enabled
+    config:
+      uri: http://config-service:8012
+      failFast: true
+      retry:
+        maxAttempts: 20
