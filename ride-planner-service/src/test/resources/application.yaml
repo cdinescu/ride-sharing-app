@@ -6,7 +6,23 @@ spring:
       enabled: false
     discovery:
       enabled: false
-  datasource:
-    url: jdbc:postgresql://${embedded.postgresql.host}:${embedded.postgresql.port}/${embedded.postgresql.schema}
-    username: ${embedded.postgresql.user}
-    password: ${embedded:postgresql:password}
+    stream:
+      default-binder: kafka
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
+      bindings:
+        output:
+          binder: kafka
+          destination: ride-planning-topic
+          content-type: text/plain
+      producer:
+        key.serializer: org.apache.kafka.common.serialization.StringSerializer
+        value.serializer: org.apache.kafka.common.serialization.StringSerializer
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+      group-id: baeldung
+test:
+  topic: ride-planning-topic

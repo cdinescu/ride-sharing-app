@@ -44,7 +44,7 @@ class RidePlanningServiceTest {
 
     @Test
     @Rollback
-    void createRide() {
+    void createRide() throws InterruptedException {
         // Arrange
         var rideRequest = createRideRequest(PICKUP_LOCATION.name(), DESTINATION.name());
         var expectedRide = createRideEntity(PICKUP_LOCATION.name(), DESTINATION.name(), NEW);
