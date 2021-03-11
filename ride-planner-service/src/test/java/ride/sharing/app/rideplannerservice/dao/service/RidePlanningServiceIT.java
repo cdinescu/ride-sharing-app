@@ -1,6 +1,6 @@
 package ride.sharing.app.rideplannerservice.dao.service;
 
-import org.junit.Rule;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 @ContextConfiguration(initializers = {RidePlanningServiceIT.Initializer.class})
 public class RidePlanningServiceIT extends RidePlanningServiceTest {
 
-    //@Rule
     public static KafkaContainer kafka;
 
     static {
@@ -43,6 +42,7 @@ public class RidePlanningServiceIT extends RidePlanningServiceTest {
         super.createRide();
 
         consumer.getLatch().await(10000, TimeUnit.MILLISECONDS);
-        System.out.println(consumer.getPayload());
+        Assertions.assertNotNull(consumer.getPayload());
+        Assertions.assertTrue(consumer.getPayload().contains("ride-planning-topic"));
     }
 }
