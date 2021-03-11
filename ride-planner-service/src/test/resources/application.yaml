@@ -6,20 +6,7 @@ spring:
       enabled: false
     discovery:
       enabled: false
-    stream:
-      default-binder: kafka
-      kafka:
-        binder:
-          brokers:
-            - localhost:9092
-      bindings:
-        output:
-          binder: kafka
-          destination: ride-planning-topic
-          content-type: text/plain
-      producer:
-        key.serializer: org.apache.kafka.common.serialization.StringSerializer
-        value.serializer: org.apache.kafka.common.serialization.StringSerializer
+
   kafka:
     consumer:
       auto-offset-reset: earliest
