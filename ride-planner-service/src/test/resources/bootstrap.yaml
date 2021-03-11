@@ -4,3 +4,10 @@ spring:
       enabled: false
     discovery:
       enabled: false
+
+embedded:
+  postgresql:
+    enabled: true
+    dockerImage: postgres:latest
+    user: postgres
+    password: root
