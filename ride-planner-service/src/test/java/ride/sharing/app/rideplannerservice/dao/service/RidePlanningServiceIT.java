@@ -29,7 +29,8 @@ public class RidePlanningServiceIT extends RidePlanningServiceTest {
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
             TestPropertyValues.of(
-                    "spring.cloud.stream.kafka.binder.brokers=" + kafka.getBootstrapServers()
+                    "spring.cloud.stream.kafka.binder.brokers=" + kafka.getBootstrapServers(),
+                    "spring.kafka.consumer.bootstrap-servers=" + kafka.getBootstrapServers()
             ).applyTo(configurableApplicationContext.getEnvironment());
         }
     }
