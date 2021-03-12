@@ -1,23 +1,25 @@
 package ride.sharing.app.rideplannerservice.dao.service;
 
-import org.junit.jupiter.api.Assertions;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.utility.DockerImageName;
-import ride.sharing.app.rideplannerservice.kafka.KafkaConsumer;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ActiveProfiles("integration")
 @ContextConfiguration(initializers = {RidePlanningServiceIT.Initializer.class})
-@EnableKafka
 public class RidePlanningServiceIT extends RidePlanningServiceTest {
 
     public static KafkaContainer kafka;
@@ -44,8 +46,9 @@ public class RidePlanningServiceIT extends RidePlanningServiceTest {
     void createRide() throws InterruptedException {
         super.createRide();
 
-        consumer.getLatch().await(10000, TimeUnit.MILLISECONDS);
-        Assertions.assertNotNull(consumer.getPayload());
-        Assertions.assertTrue(consumer.getPayload().contains("ride-planning-topic"));
+        var consumerRecords = consumer.poll(Duration.of(5, ChronoUnit.SECONDS));
+        assertNotNull(consumerRecords);
+        assertFalse(consumerRecords.isEmpty());
+        consumerRecords.forEach(record -> System.out.println("Boo: " + record));
     }
 }
