@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 
 @ActiveProfiles("integration")
 @ContextConfiguration(initializers = {RidePlanningServiceIT.Initializer.class})
-@EnableKafka
 public class RidePlanningServiceIT extends RidePlanningServiceTest {
 
     public static KafkaContainer kafka;
