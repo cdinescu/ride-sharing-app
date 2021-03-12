@@ -3,10 +3,10 @@ package ride.sharing.app.rideplannerservice.dao.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.KafkaContainer;
@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 @ActiveProfiles("integration")
 @ContextConfiguration(initializers = {RidePlanningServiceIT.Initializer.class})
+@SpringBootTest
 public class RidePlanningServiceIT extends RidePlanningServiceTest {
 
     public static KafkaContainer kafka;
