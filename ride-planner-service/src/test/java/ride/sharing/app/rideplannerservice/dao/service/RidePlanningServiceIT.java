@@ -1,7 +1,5 @@
 package ride.sharing.app.rideplannerservice.dao.service;
 
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +10,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.utility.DockerImageName;
+import ride.sharing.app.rideplannerservice.kafka.KafkaConsumer;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.concurrent.TimeUnit;
 
 @ActiveProfiles("integration")
@@ -46,12 +42,8 @@ public class RidePlanningServiceIT extends RidePlanningServiceTest {
     void createRide() throws InterruptedException {
         super.createRide();
 
-/*        consumer.getLatch().await(10000, TimeUnit.MILLISECONDS);
+        consumer.getLatch().await(10000, TimeUnit.MILLISECONDS);
         Assertions.assertNotNull(consumer.getPayload());
-        Assertions.assertTrue(consumer.getPayload().contains("ride-planning-topic"));*/
-        ConsumerRecords consumerRecords = consumer.poll(Duration.of(2000, ChronoUnit.MILLIS));
-
-        consumerRecords.forEach(record -> System.out.println(">>>> Am: " + record));
-        Assertions.assertFalse(consumerRecords.isEmpty());
+        Assertions.assertTrue(consumer.getPayload().contains("ride-planning-topic"));
     }
 }
