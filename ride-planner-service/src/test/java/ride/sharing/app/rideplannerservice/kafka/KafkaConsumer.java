@@ -13,6 +13,10 @@ public class KafkaConsumer {
     private CountDownLatch latch = new CountDownLatch(1);
     private String payload = null;
 
+    public KafkaConsumer() {
+        log.info("Boo! KafkaConsumer");
+    }
+
     @KafkaListener(topics = "ride-planning-topic", groupId = "group_id")
     public void receive(ConsumerRecord<?, ?> consumerRecord) {
         log.info("received payload='{}'", consumerRecord.toString());
