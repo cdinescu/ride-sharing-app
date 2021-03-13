@@ -80,7 +80,7 @@ class RidePlanningServiceTest {
 
     @Test
     @Rollback
-    void updateRideWhenClientCancels() {
+    void updateRideWhenClientCancels() throws InterruptedException {
         // Arrange
         var rideRequest = createRideRequest(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name());
         rideRequest.setUpdateType(CLIENT_CANCELLATION);
@@ -93,7 +93,7 @@ class RidePlanningServiceTest {
 
     @Test
     @Rollback
-    void updateRideWhenDriverCancels() {
+    void updateRideWhenDriverCancels() throws InterruptedException {
         // Arrange
         var rideRequest = createRideRequest(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name());
         rideRequest.setUpdateType(DRIVER_CANCELLATION);
@@ -106,13 +106,13 @@ class RidePlanningServiceTest {
 
     @Test
     @Rollback
-    void skipRideStatusUpdateNullUpdate() {
+    void skipRideStatusUpdateNullUpdate() throws InterruptedException {
         testNoRideStatusUpdate(null);
     }
 
     @Test
     @Rollback
-    void skipRideStatusUpdateWhenRideStatusUnchanged() {
+    void skipRideStatusUpdateWhenRideStatusUnchanged() throws InterruptedException {
         testNoRideStatusUpdate(RideUpdateType.NO_UPDATE);
     }
 
