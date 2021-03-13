@@ -6,6 +6,13 @@ spring:
       enabled: false
     discovery:
       enabled: false
+    stream:
+      default-binder: kafka
+      bindings:
+        output:
+          binder: kafka
+          destination: ride-planning-topic
+          content-type: text/plain
   kafka:
     consumer:
       group-id: group_id
