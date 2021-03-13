@@ -10,6 +10,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import ride.sharing.app.rideplannerservice.kafka.KafkaConsumer;
 
@@ -18,15 +20,11 @@ import java.util.concurrent.TimeUnit;
 @ActiveProfiles("integration")
 @ContextConfiguration(initializers = {RidePlanningServiceIT.Initializer.class})
 @SpringBootTest
+@Testcontainers
 public class RidePlanningServiceIT extends RidePlanningServiceTest {
 
-    public static KafkaContainer kafka;
-
-    static {
-        kafka =
-                new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3"));
-        kafka.start();
-    }
+    @Container
+    public static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3"));;
 
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
@@ -42,6 +40,8 @@ public class RidePlanningServiceIT extends RidePlanningServiceTest {
 
     @Test
     void createRide() throws InterruptedException {
+        Assertions.assertTrue(kafka.isRunning());
+
         super.createRide();
 
         consumer.getLatch().await(10000, TimeUnit.MILLISECONDS);
