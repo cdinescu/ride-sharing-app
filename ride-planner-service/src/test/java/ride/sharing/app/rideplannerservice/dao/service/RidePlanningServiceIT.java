@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 @ActiveProfiles("integration")
 @ContextConfiguration(initializers = {RidePlanningServiceIT.Initializer.class})
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 class RidePlanningServiceIT extends RidePlanningServiceTest {
 
@@ -50,28 +50,28 @@ class RidePlanningServiceIT extends RidePlanningServiceTest {
         checkMessageSentInTopic(SHOULD_BE_FOUND);
     }
 
-    @Override
+    @Test
     void updateRideWhenClientCancels() throws InterruptedException {
         super.updateRideWhenClientCancels();
 
         checkMessageSentInTopic(SHOULD_BE_FOUND);
     }
 
-    @Override
+    @Test
     void updateRideWhenDriverCancels() throws InterruptedException {
         super.updateRideWhenDriverCancels();
 
         checkMessageSentInTopic(SHOULD_BE_FOUND);
     }
 
-    @Override
+    @Test
     void skipRideStatusUpdateNullUpdate() throws InterruptedException {
         super.skipRideStatusUpdateNullUpdate();
 
         checkMessageSentInTopic(!SHOULD_BE_FOUND);
     }
 
-    @Override
+    @Test
     void skipRideStatusUpdateWhenRideStatusUnchanged() throws InterruptedException {
         super.skipRideStatusUpdateWhenRideStatusUnchanged();
 
