@@ -1,8 +1,6 @@
 package ride.sharing.app.rideplannerservice.dao.service;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,18 +42,6 @@ class RidePlanningServiceIT extends RidePlanningServiceTest {
 
     @Autowired
     KafkaConsumer consumer;
-
-    @Override
-    @BeforeEach
-    void setUp() {
-        super.setUp();
-        kafka.start();
-    }
-
-    @AfterEach
-    void tearDown() {
-        kafka.stop();
-    }
 
     @Test
     void createRide() throws InterruptedException {
