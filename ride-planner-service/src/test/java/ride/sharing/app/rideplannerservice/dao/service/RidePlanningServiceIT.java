@@ -1,5 +1,6 @@
 package ride.sharing.app.rideplannerservice.dao.service;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,11 @@ class RidePlanningServiceIT extends RidePlanningServiceTest {
     @Autowired
     KafkaConsumer consumer;
 
+    @AfterEach
+    void tearDown() {
+        consumer.setPayload(null);
+    }
+
     @Test
     void createRide() throws InterruptedException {
         super.createRide();
@@ -71,16 +77,9 @@ class RidePlanningServiceIT extends RidePlanningServiceTest {
         checkMessageSentInTopic(!SHOULD_BE_FOUND);
     }
 
-    @Test
-    void skipRideStatusUpdateWhenRideStatusUnchanged() throws InterruptedException {
-        super.skipRideStatusUpdateWhenRideStatusUnchanged();
-
-        checkMessageSentInTopic(!SHOULD_BE_FOUND);
-    }
-
     private void checkMessageSentInTopic(boolean shouldBeFound) throws InterruptedException {
         consumer.getLatch().await(10000, TimeUnit.MILLISECONDS);
-        String payload = consumer.getPayload();
+        var payload = consumer.getPayload();
 
         if (shouldBeFound) {
             Assertions.assertNotNull(payload);

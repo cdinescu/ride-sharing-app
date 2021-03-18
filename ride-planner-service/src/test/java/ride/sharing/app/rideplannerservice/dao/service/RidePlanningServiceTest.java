@@ -104,22 +104,17 @@ class RidePlanningServiceTest {
         updateAndCheck(rideRequest, expectedRide);
     }
 
+    // TODO: test is not ok
     @Test
     @Rollback
     void skipRideStatusUpdateNullUpdate() throws InterruptedException {
         testNoRideStatusUpdate(null);
     }
 
-    @Test
-    @Rollback
-    void skipRideStatusUpdateWhenRideStatusUnchanged() throws InterruptedException {
-        testNoRideStatusUpdate(RideUpdateType.NO_UPDATE);
-    }
-
     private void testNoRideStatusUpdate(RideUpdateType updateType) {
         // Arrange
         var rideRequest = createRideRequest(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name());
-        rideRequest.setUpdateType(updateType); // null update means update skip
+        rideRequest.setUpdateType(updateType);
 
         var expectedRide = createRideEntity(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name(), NEW);
 
