@@ -3,6 +3,7 @@ package com.ridesharing.payment.controller;
 import com.ridesharing.payment.domain.model.ChargeRequest;
 import com.ridesharing.payment.domain.model.ChargeResponse;
 import com.ridesharing.payment.service.PaymentService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,12 +14,9 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @RestController
 @RequestMapping("/payments")
+@AllArgsConstructor
 public class PaymentController {
     private final PaymentService paymentService;
-
-    public PaymentController(PaymentService paymentService) {
-        this.paymentService = paymentService;
-    }
 
     @PostMapping
     public Mono<ChargeResponse> charge(@RequestBody ChargeRequest chargeRequest) {

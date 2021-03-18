@@ -2,6 +2,7 @@ package com.ridesharing.dynamic.delta.billing.controller;
 
 import com.ridesharing.dynamic.delta.billing.domain.WeatherResponse;
 import com.ridesharing.dynamic.delta.billing.service.WeatherService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +12,9 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/dynamic-billing-service")
+@AllArgsConstructor
 public class DynamicBillingController {
     private final WeatherService weatherService;
-
-    public DynamicBillingController(WeatherService weatherService) {
-        this.weatherService = weatherService;
-    }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE,
             MediaType.APPLICATION_XML_VALUE})
