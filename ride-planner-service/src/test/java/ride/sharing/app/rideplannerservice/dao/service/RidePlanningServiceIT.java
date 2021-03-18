@@ -78,7 +78,7 @@ class RidePlanningServiceIT extends RidePlanningServiceTest {
     }
 
     private void checkMessageSentInTopic(boolean shouldBeFound) throws InterruptedException {
-        consumer.getLatch().await(10000, TimeUnit.MILLISECONDS);
+        consumer.getLatch().await(30, TimeUnit.SECONDS);
         var payload = consumer.getPayload();
 
         if (shouldBeFound) {
