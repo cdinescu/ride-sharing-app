@@ -19,5 +19,13 @@ spring:
       auto-offset-reset: latest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  datasource:
+    url: r2dbc:postgresql://${embedded.postgresql.host}:${embedded.postgresql.port}/ride_sharing?TC_INITSCRIPT=db/init.sql
+    username: ${embedded.postgresql.user}
+    password: ${embedded.postgresql.password}
+  r2dbc:
+    initialization-mode: always
+ 
 test:
   topic: ride-planning-topic
+
