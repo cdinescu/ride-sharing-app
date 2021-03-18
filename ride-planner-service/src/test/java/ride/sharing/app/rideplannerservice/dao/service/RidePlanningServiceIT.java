@@ -1,5 +1,6 @@
 package ride.sharing.app.rideplannerservice.dao.service;
 
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import ride.sharing.app.rideplannerservice.kafka.KafkaConsumer;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.concurrent.TimeUnit;
 
 @ActiveProfiles("integration")
@@ -78,7 +82,9 @@ class RidePlanningServiceIT extends RidePlanningServiceTest {
     }
 
     private void checkMessageSentInTopic(boolean shouldBeFound) throws InterruptedException {
-        consumer.getLatch().await(30, TimeUnit.SECONDS);
+        Awaitility.await().atMost(Duration.of(30, ChronoUnit.SECONDS))
+                .until(() -> consumer.getLatch().await(5, TimeUnit.SECONDS));
+        //consumer.getLatch().await(30, TimeUnit.SECONDS);
         var payload = consumer.getPayload();
 
         if (shouldBeFound) {
