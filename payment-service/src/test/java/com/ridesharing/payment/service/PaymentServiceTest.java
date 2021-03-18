@@ -13,8 +13,8 @@ import reactor.test.StepVerifier;
 @SpringBootTest
 class PaymentServiceTest {
 
-    public static final String VALID_TOKEN_SOURCE = "tok_visa";
-    public static final String INVALID_TOKEN_SOURCE = "token";
+    private static final String VALID_TOKEN_SOURCE = "tok_visa";
+    private static final String INVALID_TOKEN_SOURCE = "token";
 
     @Autowired
     private PaymentService paymentService;
