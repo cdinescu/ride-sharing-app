@@ -20,7 +20,6 @@ import ride.sharing.app.rideplannerservice.kafka.KafkaConsumer;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.concurrent.TimeUnit;
 
 @ActiveProfiles("integration")
@@ -74,19 +73,11 @@ class RidePlanningServiceIT extends RidePlanningServiceTest {
         checkMessageSentInTopic(SHOULD_BE_FOUND);
     }
 
-    @Test
-    void skipRideStatusUpdateNullUpdate() throws InterruptedException {
-        super.skipRideStatusUpdateNullUpdate();
-
-        checkMessageSentInTopic(!SHOULD_BE_FOUND);
-    }
-
     private void checkMessageSentInTopic(boolean shouldBeFound) throws InterruptedException {
         Awaitility.await().atMost(Duration.of(30, ChronoUnit.SECONDS))
                 .until(() -> consumer.getLatch().await(5, TimeUnit.SECONDS));
-        //consumer.getLatch().await(30, TimeUnit.SECONDS);
-        var payload = consumer.getPayload();
 
+        var payload = consumer.getPayload();
         if (shouldBeFound) {
             Assertions.assertNotNull(payload);
             Assertions.assertTrue(payload.contains(topic));

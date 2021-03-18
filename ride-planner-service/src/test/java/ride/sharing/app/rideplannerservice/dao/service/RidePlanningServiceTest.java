@@ -104,13 +104,6 @@ class RidePlanningServiceTest {
         updateAndCheck(rideRequest, expectedRide);
     }
 
-    // TODO: test is not ok
-    @Test
-    @Rollback
-    void skipRideStatusUpdateNullUpdate() throws InterruptedException {
-        testNoRideStatusUpdate(null);
-    }
-
     private void testNoRideStatusUpdate(RideUpdateType updateType) {
         // Arrange
         var rideRequest = createRideRequest(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name());
