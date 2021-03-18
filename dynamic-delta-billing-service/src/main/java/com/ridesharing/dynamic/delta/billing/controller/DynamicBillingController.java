@@ -16,8 +16,10 @@ import reactor.core.publisher.Mono;
 public class DynamicBillingController {
     private final WeatherService weatherService;
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE})
+    @GetMapping(produces = {
+            MediaType.APPLICATION_JSON_VALUE,
+            MediaType.APPLICATION_XML_VALUE
+    })
     public Mono<WeatherResponse> getCurrentWeather(@RequestParam("query") String queryLocation) {
         return weatherService.getCurrentWeather(queryLocation);
     }

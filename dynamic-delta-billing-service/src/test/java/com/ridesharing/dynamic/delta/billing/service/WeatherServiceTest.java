@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 class WeatherServiceTest {
 
-    public static final String GPS_COORDINATES = "38.897675,-77.036547";
+    private static final String GPS_COORDINATES = "38.897675,-77.036547";
 
     @Autowired
     private RestApiProperties restApiProperties;
