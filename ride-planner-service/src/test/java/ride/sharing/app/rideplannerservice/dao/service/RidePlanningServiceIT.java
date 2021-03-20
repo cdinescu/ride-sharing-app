@@ -53,36 +53,33 @@ class RidePlanningServiceIT extends RidePlanningServiceTest {
     }
 
     @Test
-    void createRide() throws InterruptedException {
+    void createRide() {
         super.createRide();
 
-        checkMessageSentInTopic(SHOULD_BE_FOUND);
+        checkMessageSentInTopic();
     }
 
     @Test
-    void updateRideWhenClientCancels() throws InterruptedException {
+    void updateRideWhenClientCancels() {
         super.updateRideWhenClientCancels();
 
-        checkMessageSentInTopic(SHOULD_BE_FOUND);
+        checkMessageSentInTopic();
     }
 
     @Test
-    void updateRideWhenDriverCancels() throws InterruptedException {
+    void updateRideWhenDriverCancels() {
         super.updateRideWhenDriverCancels();
 
-        checkMessageSentInTopic(SHOULD_BE_FOUND);
+        checkMessageSentInTopic();
     }
 
-    private void checkMessageSentInTopic(boolean shouldBeFound) throws InterruptedException {
+    private void checkMessageSentInTopic() {
         Awaitility.await().atMost(Duration.of(30, ChronoUnit.SECONDS))
                 .until(() -> consumer.getLatch().await(5, TimeUnit.SECONDS));
 
         var payload = consumer.getPayload();
-        if (shouldBeFound) {
-            Assertions.assertNotNull(payload);
-            Assertions.assertTrue(payload.contains(topic));
-        } else {
-            Assertions.assertNull(payload);
-        }
+        Assertions.assertNotNull(payload);
+        Assertions.assertTrue(payload.contains(topic));
+
     }
 }

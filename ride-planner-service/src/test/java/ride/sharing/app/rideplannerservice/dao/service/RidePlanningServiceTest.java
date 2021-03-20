@@ -1,6 +1,5 @@
 package ride.sharing.app.rideplannerservice.dao.service;
 
-import com.ridesharing.domain.model.ride.RideUpdateType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +43,7 @@ class RidePlanningServiceTest {
 
     @Test
     @Rollback
-    void createRide() throws InterruptedException {
+    void createRide() {
         // Arrange
         var rideRequest = createRideRequest(PICKUP_LOCATION.name(), DESTINATION.name());
         var expectedRide = createRideEntity(PICKUP_LOCATION.name(), DESTINATION.name(), NEW);
@@ -80,7 +79,7 @@ class RidePlanningServiceTest {
 
     @Test
     @Rollback
-    void updateRideWhenClientCancels() throws InterruptedException {
+    void updateRideWhenClientCancels() {
         // Arrange
         var rideRequest = createRideRequest(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name());
         rideRequest.setUpdateType(CLIENT_CANCELLATION);
@@ -93,23 +92,12 @@ class RidePlanningServiceTest {
 
     @Test
     @Rollback
-    void updateRideWhenDriverCancels() throws InterruptedException {
+    void updateRideWhenDriverCancels() {
         // Arrange
         var rideRequest = createRideRequest(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name());
         rideRequest.setUpdateType(DRIVER_CANCELLATION);
 
         var expectedRide = createRideEntity(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name(), CANCELLED_BY_DRIVER);
-
-        // Act & Assert
-        updateAndCheck(rideRequest, expectedRide);
-    }
-
-    private void testNoRideStatusUpdate(RideUpdateType updateType) {
-        // Arrange
-        var rideRequest = createRideRequest(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name());
-        rideRequest.setUpdateType(updateType);
-
-        var expectedRide = createRideEntity(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name(), NEW);
 
         // Act & Assert
         updateAndCheck(rideRequest, expectedRide);
