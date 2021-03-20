@@ -9,4 +9,4 @@ spring:
       retry:
         maxAttempts: 20
 
-server.port: 9094
+server.port: 5054
