@@ -10,3 +10,9 @@ spring:
         maxAttempts: 20
 
 server.port: 8082
+management:
+  endpoints:
+    web:
+      base-path: /manage
+  server:
+    port: 8081

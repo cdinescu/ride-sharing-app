@@ -25,9 +25,13 @@ server:
 management:
   endpoints:
     enabled-by-default: false
+    web:
+      base-path: /manage
   endpoint:
     info:
       enabled: true
+  server:
+    port: 8081
 
 logging.level.org.springframework:
   cloud: debug

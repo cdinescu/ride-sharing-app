@@ -7,3 +7,10 @@ eureka:
   client:
     fetch-registry: false
     register-with-eureka: false
+
+management:
+  endpoints:
+    web:
+      base-path: /manage
+  server:
+    port: 8081
