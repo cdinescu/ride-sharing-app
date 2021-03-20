@@ -1,4 +1,4 @@
-package ride.sharing.app.rideplannerservice.kafka;
+package com.ridesharing.gps.position.tracker.kafka;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
