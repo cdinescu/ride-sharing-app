@@ -1,6 +1,7 @@
 package com.ridesharing.gps.position.tracker.service;
 
 import com.ridesharing.gps.position.tracker.kafka.KafkaConsumer;
+import lombok.extern.slf4j.Slf4j;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -22,6 +23,9 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
+@Slf4j
 @ActiveProfiles("integration")
 @ContextConfiguration(initializers = {GpsPositionTrackerServiceIT.Initializer.class})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -66,8 +70,15 @@ public class GpsPositionTrackerServiceIT extends GpsPositionTrackerServiceTest {
     }
 
     private void checkMessageSentInTopic(boolean shouldBeFound) {
-        Awaitility.await().atMost(Duration.of(30, ChronoUnit.SECONDS))
-                .until(() -> consumer.getLatch().await(5, TimeUnit.SECONDS));
+        try {
+            Awaitility.await().atMost(Duration.of(30, ChronoUnit.SECONDS))
+                    .until(() -> consumer.getLatch().await(5, TimeUnit.SECONDS));
+        } catch (Exception theException) {
+            if (shouldBeFound) {
+                log.error("The latch was not count down! ", theException);
+                fail("The latch should be acquired upon the message arrival");
+            }
+        }
 
         var payload = consumer.getPayload();
         if (shouldBeFound) {
