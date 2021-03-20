@@ -51,7 +51,6 @@ public class GpsPositionTrackerServiceIT extends GpsPositionTrackerServiceTest {
         consumer.setPayload(null);
     }
 
-    @Override
     @Test
     void notifyGpsPositionChanged() {
         super.notifyGpsPositionChanged();
@@ -59,7 +58,6 @@ public class GpsPositionTrackerServiceIT extends GpsPositionTrackerServiceTest {
         checkMessageSentInTopic(SHOULD_BE_FOUND);
     }
 
-    @Override
     @Test
     void skipGpsPositionChanged() {
         super.skipGpsPositionChanged();
@@ -79,6 +77,4 @@ public class GpsPositionTrackerServiceIT extends GpsPositionTrackerServiceTest {
             Assertions.assertNull(payload);
         }
     }
-
-
 }
