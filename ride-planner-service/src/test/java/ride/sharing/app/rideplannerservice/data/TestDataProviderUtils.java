@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import ride.sharing.app.rideplannerservice.domain.Ride;
 import ride.sharing.app.rideplannerservice.domain.RideRequest;
 
-public class TestDataProviderUtils<T> {
+public class TestDataProviderUtils {
 
     private TestDataProviderUtils() {
     }
@@ -30,7 +30,7 @@ public class TestDataProviderUtils<T> {
     }
 
     public static void compareDatabaseEntryWithResult(Ride expectedRide, Ride ride) {
-        Ride clonedRide = expectedRide.copy();
+        var clonedRide = expectedRide.copy();
         clonedRide.setId(ride.getId());
 
         Assertions.assertEquals(ride, clonedRide);

@@ -4,3 +4,5 @@ spring:
       enabled: false
     discovery:
       enabled: false
+  profiles:
+    active: test

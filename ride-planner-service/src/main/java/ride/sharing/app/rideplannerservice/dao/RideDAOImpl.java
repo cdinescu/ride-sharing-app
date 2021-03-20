@@ -1,6 +1,7 @@
 package ride.sharing.app.rideplannerservice.dao;
 
 import com.ridesharing.domain.model.ride.RideStatus;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -16,17 +17,13 @@ import ride.sharing.app.rideplannerservice.repository.RideRepository;
 
 @Component
 @Slf4j
+@AllArgsConstructor
 public class RideDAOImpl implements RideDAO {
 
     public static final boolean RIDE_IS_CHANGED = true;
     private final ModelMapper modelMapper;
 
     private final RideRepository rideRepository;
-
-    public RideDAOImpl(ModelMapper modelMapper, RideRepository rideRepository) {
-        this.modelMapper = modelMapper;
-        this.rideRepository = rideRepository;
-    }
 
     @Override
     public Mono<Ride> createRide(RideRequest rideRequest) {
@@ -48,6 +45,7 @@ public class RideDAOImpl implements RideDAO {
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                 .map(ride -> updateRide(updateRideRequest, ride))
                 .filter(OperationStatus::isChanged)
+                .switchIfEmpty(Mono.empty())
                 .map(OperationStatus::getRide)
                 .flatMap(rideRepository::save);
     }
@@ -55,8 +53,8 @@ public class RideDAOImpl implements RideDAO {
     private OperationStatus updateRide(RideRequest rideRequest, Ride rideAboutToUpdate) {
         log.info("Update of {} triggered by {}", rideAboutToUpdate, rideRequest);
 
-        OperationStatus result = new OperationStatus(rideAboutToUpdate, !RIDE_IS_CHANGED);
-        Ride updatedRide = getUpdateRide(rideRequest, rideAboutToUpdate);
+        var result = new OperationStatus(rideAboutToUpdate, !RIDE_IS_CHANGED);
+        var updatedRide = getUpdateRide(rideRequest, rideAboutToUpdate);
 
         if (!rideAboutToUpdate.equals(updatedRide)) {
             result.setRide(updatedRide);

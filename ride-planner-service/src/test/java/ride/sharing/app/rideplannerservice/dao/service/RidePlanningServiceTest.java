@@ -1,6 +1,5 @@
 package ride.sharing.app.rideplannerservice.dao.service;
 
-import com.ridesharing.domain.model.ride.RideUpdateType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,29 +98,6 @@ class RidePlanningServiceTest {
         rideRequest.setUpdateType(DRIVER_CANCELLATION);
 
         var expectedRide = createRideEntity(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name(), CANCELLED_BY_DRIVER);
-
-        // Act & Assert
-        updateAndCheck(rideRequest, expectedRide);
-    }
-
-    @Test
-    @Rollback
-    void skipRideStatusUpdateNullUpdate() {
-        testNoRideStatusUpdate(null);
-    }
-
-    @Test
-    @Rollback
-    void skipRideStatusUpdateWhenRideStatusUnchanged() {
-        testNoRideStatusUpdate(RideUpdateType.NO_UPDATE);
-    }
-
-    private void testNoRideStatusUpdate(RideUpdateType updateType) {
-        // Arrange
-        var rideRequest = createRideRequest(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name());
-        rideRequest.setUpdateType(updateType); // null update means update skip
-
-        var expectedRide = createRideEntity(UPDATED_PICKUP_LOCATION.name(), UPDATED_DESTINATION.name(), NEW);
 
         // Act & Assert
         updateAndCheck(rideRequest, expectedRide);

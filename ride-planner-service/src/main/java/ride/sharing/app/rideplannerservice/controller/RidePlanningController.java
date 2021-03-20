@@ -1,5 +1,6 @@
 package ride.sharing.app.rideplannerservice.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,13 +18,10 @@ import ride.sharing.app.rideplannerservice.domain.RideRequest;
 
 @RestController
 @RequestMapping("/rides")
+@AllArgsConstructor
 public class RidePlanningController {
 
     private final RidePlanningService ridePlanningService;
-
-    public RidePlanningController(RidePlanningService ridePlanningService) {
-        this.ridePlanningService = ridePlanningService;
-    }
 
     @GetMapping
     public Flux<Ride> getAllRides() {

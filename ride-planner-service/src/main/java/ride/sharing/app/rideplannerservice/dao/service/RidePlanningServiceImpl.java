@@ -2,6 +2,7 @@ package ride.sharing.app.rideplannerservice.dao.service;
 
 import com.ridesharing.domain.model.ride.RideDto;
 import com.ridesharing.domain.model.ride.events.EventType;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,18 +14,13 @@ import ride.sharing.app.rideplannerservice.domain.RideRequest;
 import ride.sharing.app.rideplannerservice.eventsender.EventSender;
 
 @Service
+@AllArgsConstructor
 public class RidePlanningServiceImpl implements RidePlanningService {
     private final RideDAO rideDAO;
 
     private final EventSender eventSender;
 
-    private ModelMapper modelMapper;
-
-    public RidePlanningServiceImpl(RideDAO rideDAO, EventSender eventSender) {
-        this.rideDAO = rideDAO;
-        this.eventSender = eventSender;
-        this.modelMapper = new ModelMapper();
-    }
+    private final ModelMapper modelMapper;
 
     @Transactional
     @Override
@@ -33,6 +29,7 @@ public class RidePlanningServiceImpl implements RidePlanningService {
                 .doOnNext(ride -> eventSender.send(EventType.RIDE_CREATED, getDto(ride)));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Flux<Ride> findAllRides() {
         return rideDAO.findAllRides();
