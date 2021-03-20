@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 @Testcontainers
 class RidePlanningServiceIT extends RidePlanningServiceTest {
 
-    public static final boolean SHOULD_BE_FOUND = true;
     @Container
     public static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
 
