@@ -4,6 +4,7 @@ import com.ridesharing.gps.position.tracker.kafka.KafkaConsumer;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,6 +52,7 @@ public class GpsPositionTrackerServiceIT extends GpsPositionTrackerServiceTest {
     }
 
     @Override
+    @Test
     void notifyGpsPositionChanged() {
         super.notifyGpsPositionChanged();
 
@@ -58,6 +60,7 @@ public class GpsPositionTrackerServiceIT extends GpsPositionTrackerServiceTest {
     }
 
     @Override
+    @Test
     void skipGpsPositionChanged() {
         super.skipGpsPositionChanged();
 
