@@ -9,10 +9,4 @@ spring:
       retry:
         maxAttempts: 20
 
-server.port: 8080
-management:
-  endpoints:
-    web:
-      base-path: /manage
-  server:
-    port: 8081
+server.port: 0
