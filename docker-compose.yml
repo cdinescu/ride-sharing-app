@@ -58,6 +58,8 @@ services:
     build:
       context: gps-service/
       dockerfile: Dockerfile
+    ports:
+      - "5052:5052"
     restart: always
     networks:
       - ridesharing-network
@@ -77,6 +79,8 @@ services:
     build:
       context: dynamic-delta-billing-service/
       dockerfile: Dockerfile
+    ports:
+      - "5050:5050"
     restart: always
     networks:
       - ridesharing-network
@@ -96,6 +100,8 @@ services:
     build:
       context: payment-service/
       dockerfile: Dockerfile
+    ports:
+      - "5053:5053"
     restart: always
     networks:
       - ridesharing-network
@@ -115,6 +121,8 @@ services:
     build:
       context: gps-position-tracker-service/
       dockerfile: Dockerfile
+    ports:
+      - "5051:5051"
     restart: always
     networks:
       - ridesharing-network
@@ -134,6 +142,8 @@ services:
     build:
       context: ride-planner-service/
       dockerfile: Dockerfile
+    ports:
+      - "5054:5054"
     restart: always
     networks:
       - ridesharing-network
