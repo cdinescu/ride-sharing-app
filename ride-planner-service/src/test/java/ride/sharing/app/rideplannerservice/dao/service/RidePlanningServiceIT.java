@@ -34,6 +34,9 @@ class RidePlanningServiceIT extends RidePlanningServiceTest {
     @Value("${test.topic}")
     private String topic;
 
+    @Autowired
+    private KafkaConsumer consumer;
+
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
             TestPropertyValues.of(
@@ -42,9 +45,6 @@ class RidePlanningServiceIT extends RidePlanningServiceTest {
             ).applyTo(configurableApplicationContext.getEnvironment());
         }
     }
-
-    @Autowired
-    KafkaConsumer consumer;
 
     @AfterEach
     void tearDown() {

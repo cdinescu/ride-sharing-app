@@ -6,19 +6,3 @@ spring:
       enabled: false
   profiles:
     active: test
-    stream:
-      default-binder: kafka
-      bindings:
-        output:
-          binder: kafka
-          destination: gps-position-topic
-          content-type: text/plain
-  kafka:
-    consumer:
-      group-id: group_id
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-
-test:
-  topic: gps-position-topic
