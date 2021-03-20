@@ -28,9 +28,10 @@ class PaymentServiceTest {
         Mono<ChargeResponse> responseMono = paymentService.charge(chargeRequest);
 
         // Assert
-        StepVerifier.create(responseMono).assertNext(response -> {
-            Assertions.assertEquals("succeeded", response.getStatus());
-        }).expectComplete().verify();
+        StepVerifier.create(responseMono)
+                .assertNext(response -> Assertions.assertEquals("succeeded", response.getStatus()))
+                .expectComplete()
+                .verify();
     }
 
     @Test
