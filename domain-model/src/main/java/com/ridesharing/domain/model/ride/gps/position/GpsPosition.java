@@ -18,5 +18,5 @@ public class GpsPosition {
 
     private Float longitude;
 
-    private Float speed;
+    private Integer speed;
 }
