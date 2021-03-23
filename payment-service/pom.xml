@@ -15,10 +15,10 @@
   </properties>
 
   <dependencies>
+    <!-- Spring backbone dependencies -->
     <dependency>
-      <groupId>com.stripe</groupId>
-      <artifactId>stripe-java</artifactId>
-      <version>${stripe.api.version}</version>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webflux</artifactId>
     </dependency>
 
     <dependency>
@@ -28,6 +28,13 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-config</artifactId>
+    </dependency>
+
+    <!-- Stripe SDK -->
+    <dependency>
+      <groupId>com.stripe</groupId>
+      <artifactId>stripe-java</artifactId>
+      <version>${stripe.api.version}</version>
     </dependency>
 
     <!-- Open API -->

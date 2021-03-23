@@ -12,7 +12,7 @@
     <name>ride-planner-service</name>
 
     <dependencies>
-        <!-- Spring backbone dependencies -->
+        <!-- Domain model -->
         <dependency>
             <groupId>com.ridesharing</groupId>
             <artifactId>domain-model</artifactId>
@@ -20,6 +20,11 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- Spring backbone dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream</artifactId>
