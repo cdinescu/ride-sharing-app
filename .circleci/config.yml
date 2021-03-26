@@ -1,11 +1,16 @@
-
-version: 2.1 # use CircleCI 2.0
-jobs: # a collection of steps
-  build: # runs not using Workflows must have a `build` job as entry point
-  
-    docker: # run the steps with Docker
-      - image: circleci/openjdk:11-jdk-stretch # ...with this image as the primary container; this is where all `steps` will run
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:11-jdk-stretch
       
-    steps: # a collection of executable commands
+    steps:
       - checkout
+      - save_cache:
+          key: mvn_cache
+          paths:
+            - ~/.m2
       - run: ./mvnw clean install
+      - restore_cache:
+          key: mvn_cache
+
