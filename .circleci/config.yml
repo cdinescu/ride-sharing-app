@@ -12,7 +12,7 @@ jobs:
           paths:
             - ~/.m2
       - run: ./mvnw clean verify
-      - store_test_results:
+      - store_artifacts:
           path: ~/test-results/rspec/
       - restore_cache:
           key: mvn_cache
