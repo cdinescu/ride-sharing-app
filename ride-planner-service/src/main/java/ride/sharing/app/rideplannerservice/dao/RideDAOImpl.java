@@ -1,6 +1,6 @@
 package ride.sharing.app.rideplannerservice.dao;
 
-import com.ridesharing.domain.model.ride.RideStatus;
+import com.ridesharing.rideplannerservice.RideStatus;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

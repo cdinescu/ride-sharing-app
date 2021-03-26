@@ -1,7 +1,7 @@
 package ride.sharing.app.rideplannerservice.dao.service;
 
-import com.ridesharing.domain.model.ride.RideDto;
-import com.ridesharing.domain.model.ride.events.EventType;
+import com.ridesharing.rideplannerservice.RideDto;
+import com.ridesharing.rideplannerservice.events.EventType;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

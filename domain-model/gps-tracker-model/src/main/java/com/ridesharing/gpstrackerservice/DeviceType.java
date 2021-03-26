@@ -1,4 +1,4 @@
-package com.ridesharing.domain.model.ride.gps.position;
+package com.ridesharing.gpstrackerservice;
 
 public enum DeviceType {
     CLIENT_DEVICE,

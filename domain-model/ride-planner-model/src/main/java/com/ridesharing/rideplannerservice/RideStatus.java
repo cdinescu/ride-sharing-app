@@ -1,4 +1,4 @@
-package com.ridesharing.domain.model.ride;
+package com.ridesharing.rideplannerservice;
 
 public enum RideStatus {
     NEW,

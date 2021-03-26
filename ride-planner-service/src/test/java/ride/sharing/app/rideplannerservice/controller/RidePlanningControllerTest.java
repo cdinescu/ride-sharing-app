@@ -1,6 +1,6 @@
 package ride.sharing.app.rideplannerservice.controller;
 
-import com.ridesharing.domain.model.ride.RideUpdateType;
+import com.ridesharing.rideplannerservice.RideUpdateType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,8 @@ import org.springframework.web.reactive.function.BodyInserters;
 import ride.sharing.app.rideplannerservice.data.TestDatabaseInitializerUtils;
 import ride.sharing.app.rideplannerservice.domain.Ride;
 
-import static com.ridesharing.domain.model.ride.RideStatus.CANCELLED_BY_CLIENT;
-import static com.ridesharing.domain.model.ride.RideStatus.NEW;
+import static com.ridesharing.rideplannerservice.RideStatus.CANCELLED_BY_CLIENT;
+import static com.ridesharing.rideplannerservice.RideStatus.NEW;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.DESTINATION;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.PICKUP_LOCATION;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.UPDATED_DESTINATION;

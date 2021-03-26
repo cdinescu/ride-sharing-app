@@ -1,4 +1,4 @@
-package com.ridesharing.domain.model.ride.events;
+package com.ridesharing.rideplannerservice.events;
 
 public enum EventType {
     RIDE_CREATED,

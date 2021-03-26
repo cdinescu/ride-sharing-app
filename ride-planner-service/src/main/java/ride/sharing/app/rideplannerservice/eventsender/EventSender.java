@@ -1,7 +1,8 @@
 package ride.sharing.app.rideplannerservice.eventsender;
 
-import com.ridesharing.domain.model.ride.RideDto;
-import com.ridesharing.domain.model.ride.events.EventType;
+
+import com.ridesharing.rideplannerservice.RideDto;
+import com.ridesharing.rideplannerservice.events.EventType;
 
 public interface EventSender {
     void send(EventType eventType, RideDto ride);

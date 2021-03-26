@@ -11,11 +11,11 @@ import ride.sharing.app.rideplannerservice.data.TestDatabaseInitializerUtils;
 import ride.sharing.app.rideplannerservice.domain.Ride;
 import ride.sharing.app.rideplannerservice.domain.RideRequest;
 
-import static com.ridesharing.domain.model.ride.RideStatus.CANCELLED_BY_CLIENT;
-import static com.ridesharing.domain.model.ride.RideStatus.CANCELLED_BY_DRIVER;
-import static com.ridesharing.domain.model.ride.RideStatus.NEW;
-import static com.ridesharing.domain.model.ride.RideUpdateType.CLIENT_CANCELLATION;
-import static com.ridesharing.domain.model.ride.RideUpdateType.DRIVER_CANCELLATION;
+import static com.ridesharing.rideplannerservice.RideStatus.CANCELLED_BY_CLIENT;
+import static com.ridesharing.rideplannerservice.RideStatus.CANCELLED_BY_DRIVER;
+import static com.ridesharing.rideplannerservice.RideStatus.NEW;
+import static com.ridesharing.rideplannerservice.RideUpdateType.CLIENT_CANCELLATION;
+import static com.ridesharing.rideplannerservice.RideUpdateType.DRIVER_CANCELLATION;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.DESTINATION;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.PICKUP_LOCATION;
 import static ride.sharing.app.rideplannerservice.data.TestConstants.UPDATED_DESTINATION;
