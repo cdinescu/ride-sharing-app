@@ -11,6 +11,9 @@ jobs:
           paths:
             - ~/.m2
       - run: ./mvnw clean install
+      - store_test_results:
+          path: ~/test-results/rspec/
       - restore_cache:
           key: mvn_cache
+          
 
