@@ -2,10 +2,16 @@ version: 2.1
 machine: true
 jobs:
   build:
-    docker:
-      - image: circleci/openjdk:11-jdk-stretch
-      
+    machine:
+      image: ubuntu-2004:202010-01
     steps:
+      - run:
+          name: Install OpenJDK 11
+          command: |
+            sudo apt-get update && sudo apt-get install openjdk-11-jdk
+            sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+            sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-amd64/bin/javac
+            java -version
       - checkout
       - save_cache:
           key: mvn_cache
