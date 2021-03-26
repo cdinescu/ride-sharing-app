@@ -1,7 +1,7 @@
 package com.ridesharing.gps.position.tracker.service.controller;
 
-import com.ridesharing.domain.model.ride.gps.position.GpsPosition;
 import com.ridesharing.gps.position.tracker.service.GpsPositionTrackerService;
+import com.ridesharing.gpstrackerservice.GpsPosition;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

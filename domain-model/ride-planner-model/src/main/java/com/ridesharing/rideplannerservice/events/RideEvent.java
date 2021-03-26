@@ -1,6 +1,6 @@
-package com.ridesharing.domain.model.ride.events;
+package com.ridesharing.rideplannerservice.events;
 
-import com.ridesharing.domain.model.ride.RideDto;
+import com.ridesharing.rideplannerservice.RideDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

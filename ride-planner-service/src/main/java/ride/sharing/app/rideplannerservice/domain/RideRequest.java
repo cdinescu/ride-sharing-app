@@ -1,6 +1,6 @@
 package ride.sharing.app.rideplannerservice.domain;
 
-import com.ridesharing.domain.model.ride.RideUpdateType;
+import com.ridesharing.rideplannerservice.RideUpdateType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

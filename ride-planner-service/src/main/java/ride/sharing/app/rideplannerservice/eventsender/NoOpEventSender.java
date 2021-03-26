@@ -1,7 +1,7 @@
 package ride.sharing.app.rideplannerservice.eventsender;
 
-import com.ridesharing.domain.model.ride.RideDto;
-import com.ridesharing.domain.model.ride.events.EventType;
+import com.ridesharing.rideplannerservice.RideDto;
+import com.ridesharing.rideplannerservice.events.EventType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

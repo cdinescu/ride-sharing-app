@@ -37,15 +37,6 @@ class RidePlanningServiceIT extends RidePlanningServiceTest {
     @Autowired
     private KafkaConsumer consumer;
 
-    static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            TestPropertyValues.of(
-                    "spring.cloud.stream.kafka.binder.brokers=" + kafka.getBootstrapServers(),
-                    "spring.kafka.consumer.bootstrap-servers=" + kafka.getBootstrapServers()
-            ).applyTo(configurableApplicationContext.getEnvironment());
-        }
-    }
-
     @AfterEach
     void tearDown() {
         consumer.setPayload(null);
@@ -80,5 +71,14 @@ class RidePlanningServiceIT extends RidePlanningServiceTest {
         Assertions.assertNotNull(payload);
         Assertions.assertTrue(payload.contains(topic));
 
+    }
+
+    static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+            TestPropertyValues.of(
+                    "spring.cloud.stream.kafka.binder.brokers=" + kafka.getBootstrapServers(),
+                    "spring.kafka.consumer.bootstrap-servers=" + kafka.getBootstrapServers()
+            ).applyTo(configurableApplicationContext.getEnvironment());
+        }
     }
 }

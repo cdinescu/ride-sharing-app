@@ -22,11 +22,11 @@ public class KafkaConsumer {
         return latch;
     }
 
-    public void setPayload(String payLoad) {
-        this.payload = payLoad;
-    }
-
     public String getPayload() {
         return payload;
+    }
+
+    public void setPayload(String payLoad) {
+        this.payload = payLoad;
     }
 }

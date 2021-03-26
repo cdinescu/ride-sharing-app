@@ -1,4 +1,4 @@
-package com.ridesharing.domain.model.ride;
+package com.ridesharing.rideplannerservice;
 
 public enum RideUpdateType {
     CLIENT_CANCELLATION,

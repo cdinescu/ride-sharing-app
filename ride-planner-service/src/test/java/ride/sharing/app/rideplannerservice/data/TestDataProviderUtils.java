@@ -1,6 +1,6 @@
 package ride.sharing.app.rideplannerservice.data;
 
-import com.ridesharing.domain.model.ride.RideStatus;
+import com.ridesharing.rideplannerservice.RideStatus;
 import org.junit.jupiter.api.Assertions;
 import ride.sharing.app.rideplannerservice.domain.Ride;
 import ride.sharing.app.rideplannerservice.domain.RideRequest;

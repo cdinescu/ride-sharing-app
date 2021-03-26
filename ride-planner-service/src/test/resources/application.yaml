@@ -25,7 +25,6 @@ spring:
     password: ${embedded.postgresql.password}
   r2dbc:
     initialization-mode: always
- 
+
 test:
   topic: ride-planning-topic
-

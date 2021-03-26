@@ -15,7 +15,7 @@
         <!-- Domain model -->
         <dependency>
             <groupId>com.ridesharing</groupId>
-            <artifactId>domain-model</artifactId>
+            <artifactId>ride-planner-model</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

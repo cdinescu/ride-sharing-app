@@ -1,6 +1,6 @@
 package com.ridesharing.gps.position.tracker.eventsender;
 
-import com.ridesharing.domain.model.ride.gps.position.GpsPosition;
+import com.ridesharing.gpstrackerservice.GpsPosition;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package ride.sharing.app.rideplannerservice.domain;
 
-import com.ridesharing.domain.model.ride.RideStatus;
+import com.ridesharing.rideplannerservice.RideStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +27,7 @@ public class Ride implements Serializable {
     @Column("ride_status")
     private RideStatus rideStatus;
 
-    public Ride copy()  {
+    public Ride copy() {
         return Ride.builder()
                 .id(id)
                 .pickupLocation(pickupLocation)

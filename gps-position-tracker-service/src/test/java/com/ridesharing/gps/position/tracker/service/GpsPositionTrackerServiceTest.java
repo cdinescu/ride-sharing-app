@@ -1,8 +1,8 @@
 package com.ridesharing.gps.position.tracker.service;
 
-import com.ridesharing.domain.model.ride.gps.position.DeviceType;
-import com.ridesharing.domain.model.ride.gps.position.GpsPosition;
 import com.ridesharing.gps.position.tracker.eventsender.EventSender;
+import com.ridesharing.gpstrackerservice.DeviceType;
+import com.ridesharing.gpstrackerservice.GpsPosition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
