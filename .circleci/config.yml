@@ -17,7 +17,7 @@ jobs:
           key: mvn_cache
           paths:
             - ~/.m2
-      - run: ./mvnw -e clean verify
+      - run: ./mvnw clean verify sonar:sonar
       - run:
           name: Save test results
           command: |
@@ -31,5 +31,8 @@ jobs:
           path: ~/test-results/junit
       - restore_cache:
           key: mvn_cache
-          
-
+workflows:
+  main:
+    jobs:
+      - build:
+          context: SonarCloud

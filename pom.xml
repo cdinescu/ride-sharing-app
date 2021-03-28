@@ -33,6 +33,10 @@
     <failsafe.version>3.0.0-M4</failsafe.version>
     <testcontainers.version>1.15.2</testcontainers.version>
     <awaitility.version>4.0.0</awaitility.version>
+
+    <sonar.projectKey>cdinescu_ride-sharing-app</sonar.projectKey>
+    <sonar.organization>cdinescu</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
       
   <packaging>pom</packaging>
