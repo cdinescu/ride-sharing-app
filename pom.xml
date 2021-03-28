@@ -35,6 +35,7 @@
     <awaitility.version>4.0.0</awaitility.version>
 
     <sonar.projectKey>cdinescu_ride-sharing-app</sonar.projectKey>
+    <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
     <sonar.organization>cdinescu</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
