@@ -30,19 +30,19 @@ class GeoCodeServiceTest {
     }
 
     @Test
-    public void testNullRequest() {
+    void testNullRequest() {
         assertThrows(InvalidGeoCodeRequestException.class,
                 () -> geoCodeService.convertAddressToGeoCode(null));
     }
 
     @Test
-    public void testMissingQuery() {
+    void testMissingQuery() {
         assertThrows(InvalidGeoCodeRequestException.class,
                 () -> geoCodeService.convertAddressToGeoCode(EMPTY_QUERY));
     }
 
     @Test
-    public void convertAddressToGeoCode() {
+    void convertAddressToGeoCode() {
         Mono<Address> resultFlux = geoCodeService.convertAddressToGeoCode(GPS_COORDINATES);
 
         StepVerifier.create(resultFlux)
@@ -52,7 +52,7 @@ class GeoCodeServiceTest {
     }
 
     @Test
-    public void checkInvalidQuery() {
+    void checkInvalidQuery() {
         Mono<Address> resultFlux = geoCodeService.convertAddressToGeoCode(INVALID_QUERY);
 
         StepVerifier.create(resultFlux)
